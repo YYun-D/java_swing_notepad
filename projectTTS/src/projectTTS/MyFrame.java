@@ -51,6 +51,8 @@ public class MyFrame extends JFrame{
 		ImageIcon iconX = new ImageIcon("x.png");
 		ImageIcon iconNote = new ImageIcon("img.png");
 		ImageIcon iconStar = new ImageIcon("ic_star.png");
+		ImageIcon categoriesImg = new ImageIcon("categories.png");	//과목 선택 화면 background image
+		ImageIcon subjectImg = new ImageIcon("subject.png");	//과목 진입 후 화면 background image
 		JButton startButton = new JButton("시작");  	//처음 start 및 뒤로 가는 버튼
 		JButton addSubjectButton = new JButton("+"); 	//주제 추가 버튼
 		JButton testButton = new JButton("시험");    	//해당 과목에 있는 것들 테스트 버튼
@@ -58,11 +60,49 @@ public class MyFrame extends JFrame{
 		JButton addWord = new JButton("추가");         	//해당 주제 테이블에 새로운 단어 추가 버튼
 		JCheckBox selectAll = new JCheckBox(); 
 		JCheckBox selectImportant = new JCheckBox(); 
-		JTextField subjectText = new JTextField();      //주제 추가할 때 쓰는 텍스트필드
+		JTextField subjectText = new JTextField();     //주제 추가할 때 쓰는 텍스트필드
 		JPanel selectBox= new JPanel();
 		JPanel selectBox1= new JPanel();
 		JLabel selectYN=new JLabel();
 		JLabel selectYN1=new JLabel();
+		JLabel categoriesLabel = new JLabel();		//JLabel for 과목 선택 화면 background
+		JLabel subjectLabel = new JLabel();		//JLabel for 과목 진입 후 화면 background
+		JLabel catTitleLabel = new JLabel("Categories");		//주제 선택 화면-제목
+		JLabel catDescriptionLabel = new JLabel("주제를 선택하거나 새로운 주제를 추가하세요.");		//주제 선택 화면-설명
+		
+		//과목 선택 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
+		categoriesLabel.setIcon(categoriesImg);
+		categoriesLabel.setBounds(0,0,480,853);
+		categoriesLabel.setVisible(true);
+
+		JPanel categoriesPanel = new JPanel();
+		categoriesPanel.setVisible(false);	//생성 시엔 visibility false, 시각화할 때만 true 설정
+		categoriesPanel.setBounds(0,-10,480,853);
+		this.add(categoriesPanel);
+		categoriesPanel.add(categoriesLabel);
+		
+		//----------------------------//
+		
+		//해당 과목 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
+		subjectLabel.setIcon(categoriesImg);
+		subjectLabel.setBounds(0,0,480,853);
+		subjectLabel.setVisible(true);
+		
+		JPanel subjectPanel = new JPanel();
+		subjectPanel.setVisible(false);
+		subjectPanel.setBounds(0,-10,480,853);
+		this.add(subjectPanel);
+		subjectPanel.add(subjectLabel);
+		
+		catTitleLabel.setVisible(false);
+		catTitleLabel.setFont(new Font("Futura",Font.PLAIN ,30));		//커스텀 폰트 어떻게?
+		catTitleLabel.setBounds(50,50,100,100);
+		categoriesLabel.add(catTitleLabel);		//배경 위에 텍스트를 얹어주기 위함
+		
+		catDescriptionLabel.setVisible(false);
+		catDescriptionLabel.setFont(new Font("Apple SD Gothic Neo", Font.PLAIN,30));
+		categoriesLabel.add(catDescriptionLabel);
+		
 		//SubjectWord라는 각 주제 별 단어 저장용 배열 생성
 		for(int i=0;i<6;i++) 
 			SubjectWord[i]=new Object[100][4];
@@ -72,15 +112,19 @@ public class MyFrame extends JFrame{
 			Subjects[i].setVisible(false);
 			Subjects[i].setBackground(new Color(wordColor[i]));
 			Subjects[i].setFont(new Font("Comic Sans", Font.BOLD, 30));
-			Subjects[i].setBounds(50+330*((i)%2),100+(i)/2*150,200,100);
-			this.add(Subjects[i]);
+			Subjects[i].setBounds(36,286+(i)*102,408,84);
+			
+//			this.add(Subjects[i]);
+			categoriesLabel.add(Subjects[i]);
 			deleteSubjects[i]=new JButton();
 			deleteSubjects[i].setVisible(false);
 			deleteSubjects[i].setBackground(new Color(wordColor[i]));
 			deleteSubjects[i].setIcon(iconX);
-			deleteSubjects[i].setBounds(250+330*((i)%2),100+(i)/2*150,30,30);
-			this.add(deleteSubjects[i]);
+			deleteSubjects[i].setBounds(440,286+(i)*102,30,30);
+//			this.add(deleteSubjects[i]);
+			categoriesLabel.add(deleteSubjects[i]);
 		}
+		
 		//Subjects 눌렀을 때 보여지는 스크롤 가능한 테이블 생성
 		for(int i=0;i<6;i++) {
 			wordTable[i] = new JTable(SubjectWord[i],columnNames) {
@@ -199,7 +243,7 @@ public class MyFrame extends JFrame{
 		addWord.setVisible(false);
 		addWord.setBounds(290,20,100,50);
 
-		addSubjectButton.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+		addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		addSubjectButton.setFont(new Font("Comic Sans", Font.BOLD, 50));
 		addSubjectButton.setVisible(false);
 		addSubjectButton.setBackground(new Color(0x14A989));
@@ -245,7 +289,7 @@ public class MyFrame extends JFrame{
 			}
 			if(cntSubject<6) {
 				Subjects[cntSubject].setVisible(false);
-				subjectText.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+				subjectText.setBounds(36,286+(cntSubject)*102,408,84);
 				subjectText.setVisible(true);
 				if(cntSubject==6) //5개가 다 차면 더 이상 추가 못하게 막음
 					addSubjectButton.setVisible(false);
@@ -283,7 +327,7 @@ public class MyFrame extends JFrame{
 					cntSubject-=1;
 					Subjects[cntSubject].setVisible(false);
 					deleteSubjects[cntSubject].setVisible(false);
-					addSubjectButton.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 					if(cntSubject<6)
 						addSubjectButton.setVisible(true);
 				}
@@ -351,11 +395,16 @@ public class MyFrame extends JFrame{
 			selectBox.setVisible(false);
 			selectBox1.setVisible(false);
 			selectAll.setSelected(false);
+			
+			categoriesPanel.setVisible(true);
+			categoriesLabel.setVisible(true);
+			
 			for(int i=0;i<cntSubject;i++) {
 				scroll_table[i].setVisible(false);
 				Subjects[i].setVisible(true);
 				deleteSubjects[i].setVisible(true);
 			}
+			
 			if(cntSubject<6)
 				addSubjectButton.setVisible(true);
 		});
@@ -442,7 +491,7 @@ public class MyFrame extends JFrame{
 			    	Subjects[cntSubject-1].setText(tempSubjectName);
 			    	deleteSubjects[cntSubject-1].setVisible(true);
 			    	subjectText.setText("");
-					addSubjectButton.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		    	}
 		    	if(cntSubject!=6)
 		    		addSubjectButton.setVisible(true);
@@ -458,7 +507,8 @@ public class MyFrame extends JFrame{
         this.setTitle("Fancy Note Pad");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(650,650);
+//        this.setSize(480,853);
+				this.setSize(650,853);
         this.setLayout(null);
         this.setVisible(true);
         this.getContentPane().setBackground(new Color(0xf8b195));
@@ -468,9 +518,11 @@ public class MyFrame extends JFrame{
         label1.setVisible(true);
         this.add(label1);*/
         this.add(startButton);
-        this.add(addSubjectButton);
+        
+        
+        categoriesLabel.add(addSubjectButton);
         this.add(deleteSelectedWords);
-        this.add(subjectText);
+        categoriesLabel.add(subjectText);
         this.add(testButton);
         this.add(addWord);
         this.add(selectBox);
