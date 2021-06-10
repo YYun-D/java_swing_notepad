@@ -25,266 +25,296 @@ import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.protobuf.ByteString;
 
 public class test extends JFrame  {
-	
-	
-	AudioConfig audioConfig =AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.LINEAR16).build();
-	JRadioButton wordButton = new JRadioButton("¥‹æÓ Ω√«Ë"); //¥‹æÓ Ω√«Ë πˆ∆∞
-	JRadioButton meanButton = new JRadioButton("∂Ê Ω√«Ë"); // ∂Ê Ω√«Ë πˆ∆∞
-	ButtonGroup group = new ButtonGroup();
-	JButton startButton1 = new JButton("Ω√«Ë"); // start πˆ∆∞
-	JButton submitButton = new JButton("¡¶√‚"); // submit πˆ∆∞
-	JTextField testField = new JTextField(); // ¿‘∑¬ ≈ÿΩ∫∆Æ« µÂ
-	JLabel wordLabel = new JLabel(); // πÆ¡¶ ∂ÁøÏ¥¬ ∂Û∫ß
-	Object [][]wrong = new Object[100][3];
-	JScrollPane scrolltable = new JScrollPane();
-	JProgressBar cntBar = new JProgressBar(); // ¡¯«‡ ∞‘¿Ã¡ˆπŸ
-	ImageIcon iconO = new ImageIcon("o.jpg");
-	ImageIcon iconX = new ImageIcon("x.png");
-	int testcnt;
-	int[] currenttestnum = new int[100];
-	int testcount;
-	int result;
-	int WordMean=-1;
-	List<Integer> array = new ArrayList<>();
-	test() throws IOException, LineUnavailableException, UnsupportedAudioFileException{
-		
-		
-		
-		JRootPane  rootPane  =  this.getRootPane();
-	    rootPane.setDefaultButton(submitButton);  
-		Object[] column = {"(O,X)","¥‹æÓ","∂Ê"};
-		// Ω√«Ë ≥°ø° ¡§¥‰ »Æ¿Œ«œ¥¬ ≈◊¿Ã∫Ì ª˝º∫
-		JTable wrongTable = new JTable(wrong,column) {
-			@Override
-			public Class getColumnClass(int column) {
-	            switch (column) {
-	                case 0:
-	                    return Icon.class;
-	                case 1:
-	                    return String.class;
-	                default:
-	                    return String.class;
-	            }
-	        }
-			
-			@Override
-			public boolean isCellEditable(int row, int col) {
-		        return false;
-		    }
-		};
-		wrongTable.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		wrongTable.setFont(new Font("µ∏øÚ√º", Font.BOLD, 20));
-		wrongTable.setBackground(new Color(MyFrame.wordColor[0]));
-		wrongTable.setRowHeight(20);
-		scrolltable = new JScrollPane(wrongTable);
-	    scrolltable.setVisible(false);
-	    scrolltable.setBounds(50,50,400,400);
+   
+   
+   AudioConfig audioConfig =AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.LINEAR16).build();
+   RoundedButton wordButton = new RoundedButton("Îã®Ïñ¥ ÏãúÌóò"); //Îã®Ïñ¥ ÏãúÌóò Î≤ÑÌäº
+   RoundedButton meanButton = new RoundedButton("Îúª ÏãúÌóò"); // Îúª ÏãúÌóò Î≤ÑÌäº
+   ButtonGroup group = new ButtonGroup();
+   //JButton startButton1 = new JButton("Start"); // start Î≤ÑÌäº
+   RoundedButton submitButton = new RoundedButton("Ï†úÏ∂ú"); // submit Î≤ÑÌäº
+   JTextField testField = new JTextField(); // ÏûÖÎ†• ÌÖçÏä§Ìä∏ÌïÑÎìú
+   JLabel wordLabel = new JLabel(); // Î¨∏Ï†ú ÎùÑÏö∞Îäî ÎùºÎ≤®
+   
+   Object [][]wrong = new Object[100][3];
+   JScrollPane scrolltable = new JScrollPane();
+   JProgressBar cntBar = new JProgressBar(); // ÏßÑÌñâ Í≤åÏù¥ÏßÄÎ∞î
+   ImageIcon iconO = new ImageIcon("O.png");
+   ImageIcon iconX = new ImageIcon("XX.png");
+   ImageIcon iconNote = new ImageIcon("tes1.png");
+   int testcnt;
+   int[] currenttestnum = new int[100];
+   int testcount;
+   int result;
+   static int WordMean=-1;
+   List<Integer> array = new ArrayList<>();
+   test() throws IOException, LineUnavailableException, UnsupportedAudioFileException{
+      
+      
+      JRootPane  rootPane  =  this.getRootPane();
+       rootPane.setDefaultButton(submitButton);  
+      Object[] column = {"(O,X)","Îã®Ïñ¥","Îúª"};
+      // ÏãúÌóò ÎÅùÏóê Ï†ïÎãµ ÌôïÏù∏ÌïòÎäî ÌÖåÏù¥Î∏î ÏÉùÏÑ±
+      JTable wrongTable = new JTable(wrong,column) {
+         @Override
+         public Class getColumnClass(int column) {
+               switch (column) {
+                   case 0:
+                       return Icon.class;
+                   case 1:
+                       return String.class;
+                   default:
+                       return String.class;
+               }
+           }
+         
+         @Override
+         public boolean isCellEditable(int row, int col) {
+              return false;
+          }
+      };
+      wrongTable.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+      wrongTable.setFont(new Font("ÎèãÏõÄÏ≤¥", Font.BOLD, 20));
+      wrongTable.setBackground(new Color(MyFrame.wordColor[0]));
+      wrongTable.setRowHeight(20);
+      scrolltable = new JScrollPane(wrongTable);
+       scrolltable.setVisible(false);
+       scrolltable.setBounds(0,50,465,700);
+       wrongTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+       wrongTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+       wrongTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+       wrongTable.setRowHeight(40);
         this.add(scrolltable);
         
-		group.add(wordButton);
-		group.add(meanButton);
-		wordButton.setBounds(150, 90, 200, 100);
-		meanButton.setBounds(150, 160, 200, 100);
-		startButton1.setBounds(150, 300, 200, 50);
-		testField.setBounds(150, 200, 200, 50);
-		submitButton.setBounds(150, 300, 200, 50);
-		wordLabel.setBounds(150, 100, 200, 50);
-		cntBar.setBounds(300,0,150,40);
-		
-		// ±€¿⁄ ∆˘∆Æ
-		wordButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		meanButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		startButton1.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		testField.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		submitButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		wordLabel.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		cntBar.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		
-		testField.setVisible(false);
-		submitButton.setVisible(false);
-		wordLabel.setVisible(false);
-		cntBar.setVisible(false);
-		
-		cntBar.setForeground(Color.BLUE);
-		cntBar.setBackground(Color.WHITE);
-		
-		// ¥‹æÓΩ√«Ë Ω√¿€πˆ∆∞
-		wordButton.addActionListener(e->{
-			WordMean=0;
-		});
-		
-		// ∂ÊΩ√«Ë Ω√¿€πˆ∆∞
-		meanButton.addActionListener(e->{
-			WordMean=1;
-		});
-		startButton1.addActionListener(f -> {
-			if(WordMean==0) {
-				testcount=0;
-				testcnt=0;
-				wordButton.setVisible(false);
-				meanButton.setVisible(false);
-				startButton1.setVisible(false);
-				testField.setVisible(true);
-				submitButton.setVisible(true);
-				wordLabel.setVisible(true);
-				group.clearSelection();
-				for(int i=0;i<MyFrame.SubjectWordCnt[MyFrame.currentSubject];i++) {
-					if(MyFrame.SubjectWord[MyFrame.currentSubject][i][3].equals(true)) {
-						array.add(i);
-						testcnt++;
-					}
-				}
-				cntBar.setValue(testcount);
-				cntBar.setString(testcount+"/"+testcnt);
-				cntBar.setStringPainted(true);
-				cntBar.setVisible(true);
-				Collections.shuffle(array);
-				wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][2]);
-				try {
-					tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][2], 1);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			if(WordMean==1) {
-				testcount=0;
-				testcnt=0;
-				wordButton.setVisible(false);
-				meanButton.setVisible(false);
-				startButton1.setVisible(false);
-				testField.setVisible(true);
-				submitButton.setVisible(true);
-				wordLabel.setVisible(true);
-				group.clearSelection();
-				for(int i=0;i<MyFrame.SubjectWordCnt[MyFrame.currentSubject];i++) {
-					if(MyFrame.SubjectWord[MyFrame.currentSubject][i][3].equals(true)) {
-						array.add(i);
-						testcnt++;
-					}
-				}
-				cntBar.setValue(testcount);
-				cntBar.setString(testcount+"/"+testcnt);
-				cntBar.setStringPainted(true);
-				cntBar.setVisible(true);
-				Collections.shuffle(array);
-				wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][1]);
+      group.add(wordButton);
+      group.add(meanButton);
+      wordButton.setBounds(145, 255, 200, 100);
+      meanButton.setBounds(140, 355, 200, 100);
+   //   startButton1.setBounds(180, 300, 200, 50);
+      submitButton.setBounds(143, 600, 190, 74);
+      testField.setBounds(143, 420, 195, 70);
+      wordLabel.setBounds(0, 214, 480, 80);
+      wordLabel.setHorizontalAlignment(JLabel.CENTER);
+      wordLabel.setForeground(Color.WHITE);
+      cntBar.setBounds(300,0,150,40);
+       
+      // Í∏ÄÏûê Ìè∞Ìä∏
+      wordButton.setFont(new Font("Ìï®Ï¥àÎ°¨ÎèãÏõÄ", Font.BOLD, 30));
+      meanButton.setFont(new Font("Ìï®Ï¥àÎ°¨ÎèãÏõÄ", Font.BOLD, 30));
+      //startButton1.setFont(new Font("Comic Sans", Font.BOLD, 30));
+      testField.setFont(new Font("Ìï®Ï¥àÎ°¨ÎèãÏõÄ", Font.BOLD, 30));
+      submitButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
+      wordLabel.setFont(new Font("Comic Sans", Font.BOLD, 30));
+      cntBar.setFont(new Font("Comic Sans", Font.BOLD, 30));
+      
+      testField.setVisible(false);
+      submitButton.setVisible(false);
+      wordLabel.setVisible(false);
+      cntBar.setVisible(false);
+      
+      cntBar.setForeground(Color.BLUE);
+      cntBar.setBackground(Color.WHITE);
+      
+      // Îã®Ïñ¥ÏãúÌóò ÏãúÏûëÎ≤ÑÌäº
+      wordButton.addActionListener(e->{
+         WordMean=0;
+         testcount=0;
+            testcnt=0;
+            wordButton.setVisible(false);
+            meanButton.setVisible(false);
+            //startButton1.setVisible(false);
+            testField.setVisible(true);
+            submitButton.setVisible(true);
+            wordLabel.setVisible(true);
+            testField.setHorizontalAlignment(JTextField.CENTER);
+            group.clearSelection();
+            for(int i=0;i<MyFrame.SubjectWordCnt[MyFrame.currentSubject];i++) {
+               if(MyFrame.SubjectWord[MyFrame.currentSubject][i][3].equals(true)) {
+                  array.add(i);
+                  testcnt++;
+               }
+            }
+            cntBar.setValue(((testcount+1)*100)/testcnt);
+            cntBar.setString(testcount+1+"/"+testcnt);
+            cntBar.setStringPainted(true);
+            cntBar.setVisible(true);
+            Collections.shuffle(array);
+            wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][2]);
+            try {
+               tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][2], 1);
+            } catch (Exception e1) {
+               e1.printStackTrace();
+            }
+         }
+         
+      );
+      
+      // ÎúªÏãúÌóò ÏãúÏûëÎ≤ÑÌäº
+      meanButton.addActionListener(e->{
+         WordMean=1;
+         testcount=0;
+            testcnt=0;
+            wordButton.setVisible(false);
+            meanButton.setVisible(false);
+         //   startButton1.setVisible(false);
+            testField.setVisible(true);
+            submitButton.setVisible(true);
+            wordLabel.setVisible(true);
+            group.clearSelection();
+            
+            for(int i=0;i<MyFrame.SubjectWordCnt[MyFrame.currentSubject];i++) {
+               if(MyFrame.SubjectWord[MyFrame.currentSubject][i][3].equals(true)) {
+                  array.add(i);
+                  testcnt++;
+               }
+            }
+            cntBar.setValue(((testcount+1)*100)/testcnt);
+            cntBar.setString(testcount+1+"/"+testcnt);
+            cntBar.setStringPainted(true);
+            cntBar.setVisible(true);
+            Collections.shuffle(array);
+            wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][1]);
 
-				try {
-					tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][1], 0);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		submitButton.addActionListener(f->{
-			if(WordMean==0) {
-				if(MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1].equals(testField.getText())) {
-					wrongTable.setValueAt(iconO, testcount, 0);
-					wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
-					wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
-				}
-				else {
-					wrongTable.setValueAt(iconX, testcount, 0);
-					wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
-					wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
-				}
-				cntBar.setValue((testcount*100)/testcnt);
-				cntBar.setString(testcount+"/"+testcnt);
-				testField.setText("");
-				if(testcnt==testcount) {
-					testField.setVisible(false);
-					scrolltable.setVisible(true);
-					submitButton.setVisible(false);
-				}
-				else {
-					wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2]);
-					try {
-						tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2], 1);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-			if(WordMean==1) {
-				if(MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2].equals(testField.getText())) {
-					wrongTable.setValueAt(iconO, testcount, 0);
-					wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
-					wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
-				}
-				else {
-					wrongTable.setValueAt(iconX, testcount, 0);
-					wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
-					wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
+            try {
+               tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][1], 0);
+            } catch (Exception e1) {
+               e1.printStackTrace();
+            }
+         }
+      );
+         
+         
+      ;
+   
+            
+      submitButton.addActionListener(f->{
+         if(WordMean==0) {
+            if(MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1].equals(testField.getText())) {
+               wrongTable.setValueAt(iconO, testcount, 0);
+               wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
+               wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
+            }
+            else {
+               wrongTable.setValueAt(iconX, testcount, 0);
+               wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
+               wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
+            }
+            cntBar.setValue(((testcount+1)*100)/testcnt);
+            cntBar.setString(testcount+1+"/"+testcnt);
+            testField.setText("");
+            
+            if(testcnt==testcount) {
+               cntBar.setValue(((testcount)*100)/testcnt);
+               cntBar.setString(testcount+"/"+testcnt);
+               testField.setVisible(false);
+               scrolltable.setVisible(true);
+               submitButton.setVisible(false);
+            }
+            else {
+               wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2]);
+               try {
+                  tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2], 1);
+               } catch (Exception e1) {
+                  e1.printStackTrace();
+               }
+            }
+         }
+         if(WordMean==1) {
+            if(MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2].equals(testField.getText())) {
+               wrongTable.setValueAt(iconO, testcount, 0);
+               wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
+               wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
+            }
+            else {
+               wrongTable.setValueAt(iconX, testcount, 0);
+               wrong[testcount][1]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1];
+               wrong[testcount][2]=MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount++)][2];
 
-				}
-				cntBar.setValue((testcount*100)/testcnt);
-				cntBar.setString(testcount+"/"+testcnt);
-				testField.setText("");
-				
-				if(testcnt==testcount) {
-					testField.setVisible(false);
-					scrolltable.setVisible(true);
-					submitButton.setVisible(false);
-				}
-				else {
-					wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1]);
-					try {
-						tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1], 0);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
+            }
+            cntBar.setValue(((testcount+1)*100)/testcnt);
+            cntBar.setString(testcount+1+"/"+testcnt);
+            testField.setText("");
+            
+            if(testcnt==testcount) {
+               cntBar.setValue(((testcount)*100)/testcnt);
+               cntBar.setString(testcount+"/"+testcnt);
+               testField.setVisible(false);
+               scrolltable.setVisible(true);
+               submitButton.setVisible(false);
+            }
+            else {
+               wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1]);
+               try {
+                  tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1], 0);
+               } catch (Exception e1) {
+                  e1.printStackTrace();
+               }
+            }
+         }
+      });
 
-
-		this.setResizable(false);
-		this.setSize(500,500);
-		this.setLayout(null);
-		this.setVisible(true);
-		this.add(wordButton);
-		this.add(meanButton);
-		this.add(startButton1);
-		this.add(testField);
-		this.add(submitButton);
-		this.add(wordLabel);
-		this.add(cntBar);
-		this.addWindowListener(new java.awt.event.WindowAdapter() {
-	        @Override
-			public void windowClosing(java.awt.event.WindowEvent windowEvent){
-	        	wordButton.setVisible(true);
-				meanButton.setVisible(true);
-				startButton1.setVisible(true);
-				testField.setVisible(false);
-				submitButton.setVisible(false);
-				wordLabel.setVisible(false);
-				wordLabel.setText("");
-			}
-	    });
-	}
-	void tts(String subjectWord, int b)throws Exception {
-		try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-			VoiceSelectionParams voice;
-			System.out.println(b);
-			if (b==1) {
-				voice =VoiceSelectionParams.newBuilder().setLanguageCode("ko-KR")
-						.setSsmlGender(SsmlVoiceGender.NEUTRAL).build();
-			}
-			else {
-				voice =VoiceSelectionParams.newBuilder().setLanguageCode("en-US")
-						.setSsmlGender(SsmlVoiceGender.NEUTRAL).build();
-			}
-			SynthesisInput input = SynthesisInput.newBuilder().setText(subjectWord).build();
-			SynthesizeSpeechResponse response =textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
-			ByteString audioContents = response.getAudioContent();
-			try (OutputStream out = new FileOutputStream("output.wav")) {
-				out.write(audioContents.toByteArray());
-			}
-		}
-		File file = new File("output.wav");
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-		Clip clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		clip.start();
-	}
+      
+        JLabel label1 = new JLabel();
+        label1.setIcon(iconNote);
+        label1.setBounds(0,0,480,854);
+        label1.setVisible(true);
+        JPanel panel = new JPanel();
+      panel.setVisible(true);
+      panel.setBounds(0,0,480,854);
+      this.add(panel);
+      panel.add(label1);
+      this.setResizable(false);
+      this.setSize(480,854);
+      this.setLayout(null);
+      this.setVisible(true);
+      
+      
+      label1.add(wordButton);
+      label1.add(meanButton);
+      
+      
+   //   label1.add(startButton1);
+      label1.add(testField);
+      label1.add(submitButton);
+      label1.add(wordLabel);
+      label1.add(cntBar);
+      this.addWindowListener(new java.awt.event.WindowAdapter() {
+           @Override
+         public void windowClosing(java.awt.event.WindowEvent windowEvent){
+              wordButton.setVisible(true);
+            meanButton.setVisible(true);
+         //   startButton1.setVisible(true);
+            testField.setVisible(false);
+            submitButton.setVisible(false);
+            wordLabel.setVisible(false);
+            wordLabel.setHorizontalAlignment(JLabel.CENTER);
+            wordLabel.setText("");
+         }
+       });
+   }
+   void tts(String subjectWord, int b)throws Exception {
+      try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
+         VoiceSelectionParams voice;
+         System.out.println(b);
+         if (b==1) {
+            voice =VoiceSelectionParams.newBuilder().setLanguageCode("ko-KR")
+                  .setSsmlGender(SsmlVoiceGender.NEUTRAL).build();
+         }
+         else {
+            voice =VoiceSelectionParams.newBuilder().setLanguageCode("en-US")
+                  .setSsmlGender(SsmlVoiceGender.NEUTRAL).build();
+         }
+         SynthesisInput input = SynthesisInput.newBuilder().setText(subjectWord).build();
+         SynthesizeSpeechResponse response =textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
+         ByteString audioContents = response.getAudioContent();
+         try (OutputStream out = new FileOutputStream("output.wav")) {
+            out.write(audioContents.toByteArray());
+         }
+      }
+      File file = new File("output.wav");
+      AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+      Clip clip = AudioSystem.getClip();
+      clip.open(audioStream);
+      clip.start();
+   }
 }
