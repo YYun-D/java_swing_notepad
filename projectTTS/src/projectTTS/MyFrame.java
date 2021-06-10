@@ -95,12 +95,13 @@ public class MyFrame extends JFrame{
 		subjectPanel.add(subjectLabel);
 		
 		catTitleLabel.setVisible(false);
-		catTitleLabel.setFont(new Font("Futura",Font.PLAIN ,30));		//커스텀 폰트 어떻게?
+		catTitleLabel.setFont(new Font("Comic Sans",Font.BOLD ,30));		//커스텀 폰트 어떻게?
 		catTitleLabel.setBounds(50,50,100,100);
 		categoriesLabel.add(catTitleLabel);		//배경 위에 텍스트를 얹어주기 위함
 		
 		catDescriptionLabel.setVisible(false);
 		catDescriptionLabel.setFont(new Font("Apple SD Gothic Neo", Font.PLAIN,30));
+		catDescriptionLabel.setBounds(50,70,100,100);
 		categoriesLabel.add(catDescriptionLabel);
 		
 		//SubjectWord라는 각 주제 별 단어 저장용 배열 생성
@@ -173,7 +174,7 @@ public class MyFrame extends JFrame{
 			wordTable[i].setRowHeight(40);
 			scroll_table[i] = new JScrollPane(wordTable[i]);
 		    scroll_table[i].setVisible(false);
-		    scroll_table[i].setBounds(100,100,400,400);
+		    scroll_table[i].setBounds(60,100,400,700);
 		    wordTable[i].getColumnModel().getColumn(0).setPreferredWidth(50);
 		    wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
 		    wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
@@ -291,7 +292,7 @@ public class MyFrame extends JFrame{
 				Subjects[cntSubject].setVisible(false);
 				subjectText.setBounds(36,286+(cntSubject)*102,408,84);
 				subjectText.setVisible(true);
-				if(cntSubject==6) //5개가 다 차면 더 이상 추가 못하게 막음
+				if(cntSubject==5) //5개가 다 차면 더 이상 추가 못하게 막음
 					addSubjectButton.setVisible(false);
 			}
 		});
@@ -300,6 +301,12 @@ public class MyFrame extends JFrame{
 			int k=i;
 			Subjects[i].addActionListener(e -> { //각 주제인 Subjects[i]가 눌렸을 때 
 				currentSubject=k;
+				
+				//이전 페이지의 개체들을 모두 보이지 않게끔 설정
+				categoriesPanel.setVisible(false);
+				categoriesLabel.setVisible(false);
+				catTitleLabel.setVisible(false);
+				catDescriptionLabel.setVisible(false);
 				
 				startButton.setVisible(true);
 				testButton.setVisible(true);
@@ -386,7 +393,7 @@ public class MyFrame extends JFrame{
 		
 		//메인화면으로 가기
 		startButton.addActionListener(e -> {
-			startButton.setBounds(510,20,70,50);
+			startButton.setBounds(400,20,70,50);
 			startButton.setText("<-");
 			startButton.setVisible(false);
 			testButton.setVisible(false);
@@ -396,8 +403,11 @@ public class MyFrame extends JFrame{
 			selectBox1.setVisible(false);
 			selectAll.setSelected(false);
 			
+			//과목 선택 페이지에서 visualize 될 것들
 			categoriesPanel.setVisible(true);
 			categoriesLabel.setVisible(true);
+			catTitleLabel.setVisible(true);
+			catDescriptionLabel.setVisible(true);
 			
 			for(int i=0;i<cntSubject;i++) {
 				scroll_table[i].setVisible(false);
@@ -508,7 +518,7 @@ public class MyFrame extends JFrame{
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        this.setSize(480,853);
-				this.setSize(650,853);
+				this.setSize(480,853);	//창 크기 설정, 16:9 종횡비
         this.setLayout(null);
         this.setVisible(true);
         this.getContentPane().setBackground(new Color(0xf8b195));
