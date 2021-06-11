@@ -48,7 +48,7 @@ public class MyFrame extends JFrame{
 
 	MyFrame() throws IOException{
 		ImageIcon icon2 = new ImageIcon("noteIcon.png");
-		ImageIcon iconX = new ImageIcon("x.png");
+		ImageIcon iconX = new ImageIcon("XX.png");
 		ImageIcon iconNote = new ImageIcon("img.png");
 		ImageIcon iconStar = new ImageIcon("ic_star.png");
 		ImageIcon categoriesImg = new ImageIcon("categories.png");	//과목 선택 화면 background image
@@ -97,7 +97,7 @@ public class MyFrame extends JFrame{
 		//과목 선택 화면 텍스트 설정
 		catTitleLabel.setVisible(false);
 		catTitleLabel.setFont(new Font("Comic Sans",Font.BOLD ,30));		//커스텀 폰트 어떻게?
-		catTitleLabel.setBounds(50,50,100,100);
+		catTitleLabel.setBounds(50,50,300,100);
 		categoriesLabel.add(catTitleLabel);		//배경 위에 텍스트를 얹어주기 위함
 		
 		catDescriptionLabel.setVisible(false);
@@ -348,6 +348,7 @@ public class MyFrame extends JFrame{
 					cntSubject-=1;
 					Subjects[cntSubject].setVisible(false);
 					deleteSubjects[cntSubject].setVisible(false);
+					SubjectWordCnt[cntSubject]=0;
 					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 					if(cntSubject<6)
 						addSubjectButton.setVisible(true);
