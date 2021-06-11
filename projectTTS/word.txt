@@ -1,21 +1,18 @@
-3
-dfk
-sadf
-sfd
-9
-star.jpg adf ¿¡ÀÌµð¿¡ÇÁ
-star.jpg adf µð¿¡ÇÁ
-star.jpg asdf ¿Í¿ì
-star.jpg hi ¾È³ç
-star.jpg bye Àß°¡
-false haha ÇÏÇÏ
-false English English
-false Korean ÇÑ±¹¾î
-false hello ¾È³ç
+4
+1
 2
-false adf ¿¡ÀÌµð¿¡ÇÁ
-star.jpg wer ´õºêÀ¯ÀÌ¾Ë
 3
-false boy ¼Ò³â
-false girl ¼Ò³à
-false man ³²ÀÚ
+4
+4
+ic_star.png apple ì‚¬ê³¼
+false null null
+false null null
+false null null
+2
+false null null
+false null null
+3
+false null null
+false null null
+false null null
+0

@@ -51,18 +51,60 @@ public class MyFrame extends JFrame{
 		ImageIcon iconX = new ImageIcon("x.png");
 		ImageIcon iconNote = new ImageIcon("img.png");
 		ImageIcon iconStar = new ImageIcon("ic_star.png");
+		ImageIcon categoriesImg = new ImageIcon("categories.png");	//과목 선택 화면 background image
+		ImageIcon subjectImg = new ImageIcon("subject.png");	//과목 진입 후 화면 background image
 		JButton startButton = new JButton("시작");  	//처음 start 및 뒤로 가는 버튼
 		JButton addSubjectButton = new JButton("+"); 	//주제 추가 버튼
-		JButton testButton = new JButton("시험");    	//해당 과목에 있는 것들 테스트 버튼
+		JButton testButton = new JButton("TEST");    	//해당 과목에 있는 것들 테스트 버튼
 		JButton deleteSelectedWords = new JButton("삭제");	//해당 주제 삭제 버튼
 		JButton addWord = new JButton("추가");         	//해당 주제 테이블에 새로운 단어 추가 버튼
 		JCheckBox selectAll = new JCheckBox(); 
 		JCheckBox selectImportant = new JCheckBox(); 
-		JTextField subjectText = new JTextField();      //주제 추가할 때 쓰는 텍스트필드
+		JTextField subjectText = new JTextField();     //주제 추가할 때 쓰는 텍스트필드
 		JPanel selectBox= new JPanel();
 		JPanel selectBox1= new JPanel();
 		JLabel selectYN=new JLabel();
 		JLabel selectYN1=new JLabel();
+		JLabel categoriesLabel = new JLabel();		//JLabel for 과목 선택 화면 background
+		JLabel subjectLabel = new JLabel();		//JLabel for 과목 진입 후 화면 background
+		JLabel catTitleLabel = new JLabel("Categories");		//주제 선택 화면-제목
+		JLabel catDescriptionLabel = new JLabel("주제를 선택하거나 새로운 주제를 추가하세요.");		//주제 선택 화면-설명
+		
+		//과목 선택 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
+		categoriesLabel.setIcon(categoriesImg);
+		categoriesLabel.setBounds(0,0,480,853);
+		categoriesLabel.setVisible(true);
+
+		JPanel categoriesPanel = new JPanel();
+		categoriesPanel.setVisible(false);	//생성 시엔 visibility false, 시각화할 때만 true 설정
+		categoriesPanel.setBounds(0,-10,480,853);
+		this.add(categoriesPanel);
+		categoriesPanel.add(categoriesLabel);
+		
+		//----------------------------//
+		
+		//해당 과목 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
+		subjectLabel.setIcon(subjectImg);
+		subjectLabel.setBounds(0,0,480,853);
+		subjectLabel.setVisible(true);
+		
+		JPanel subjectPanel = new JPanel();
+		subjectPanel.setVisible(false);
+		subjectPanel.setBounds(0,-10,480,853);
+		this.add(subjectPanel);
+		subjectPanel.add(subjectLabel);
+		
+		//과목 선택 화면 텍스트 설정
+		catTitleLabel.setVisible(false);
+		catTitleLabel.setFont(new Font("Comic Sans",Font.BOLD ,30));		//커스텀 폰트 어떻게?
+		catTitleLabel.setBounds(50,50,100,100);
+		categoriesLabel.add(catTitleLabel);		//배경 위에 텍스트를 얹어주기 위함
+		
+		catDescriptionLabel.setVisible(false);
+		catDescriptionLabel.setFont(new Font("Apple SD Gothic Neo", Font.PLAIN,30));
+		catDescriptionLabel.setBounds(50,70,100,100);
+		categoriesLabel.add(catDescriptionLabel);
+		
 		//SubjectWord라는 각 주제 별 단어 저장용 배열 생성
 		for(int i=0;i<6;i++) 
 			SubjectWord[i]=new Object[100][4];
@@ -72,15 +114,19 @@ public class MyFrame extends JFrame{
 			Subjects[i].setVisible(false);
 			Subjects[i].setBackground(new Color(wordColor[i]));
 			Subjects[i].setFont(new Font("Comic Sans", Font.BOLD, 30));
-			Subjects[i].setBounds(50+330*((i)%2),100+(i)/2*150,200,100);
-			this.add(Subjects[i]);
+			Subjects[i].setBounds(36,286+(i)*102,408,84);
+			
+//			this.add(Subjects[i]);
+			categoriesLabel.add(Subjects[i]);
 			deleteSubjects[i]=new JButton();
 			deleteSubjects[i].setVisible(false);
 			deleteSubjects[i].setBackground(new Color(wordColor[i]));
 			deleteSubjects[i].setIcon(iconX);
-			deleteSubjects[i].setBounds(250+330*((i)%2),100+(i)/2*150,30,30);
-			this.add(deleteSubjects[i]);
+			deleteSubjects[i].setBounds(440,286+(i)*102,30,30);
+//			this.add(deleteSubjects[i]);
+			categoriesLabel.add(deleteSubjects[i]);
 		}
+		
 		//Subjects 눌렀을 때 보여지는 스크롤 가능한 테이블 생성
 		for(int i=0;i<6;i++) {
 			wordTable[i] = new JTable(SubjectWord[i],columnNames) {
@@ -128,13 +174,13 @@ public class MyFrame extends JFrame{
 			wordTable[i].setBackground(new Color(wordColor[0]));
 			wordTable[i].setRowHeight(40);
 			scroll_table[i] = new JScrollPane(wordTable[i]);
-		    scroll_table[i].setVisible(false);
-		    scroll_table[i].setBounds(100,100,400,400);
-		    wordTable[i].getColumnModel().getColumn(0).setPreferredWidth(50);
-		    wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
-		    wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
-		    wordTable[i].getColumnModel().getColumn(3).setPreferredWidth(50);
-	        this.add(scroll_table[i]);
+			scroll_table[i].setVisible(false);
+			scroll_table[i].setBounds(43,266,394,502);
+			wordTable[i].getColumnModel().getColumn(0).setPreferredWidth(50);
+			wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
+			wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
+			wordTable[i].getColumnModel().getColumn(3).setPreferredWidth(50);
+				subjectLabel.add(scroll_table[i]);
 		}
 		
 		//버퍼 리더로 기존에 있는 값 불러와서 배열에 넣어주기
@@ -169,9 +215,13 @@ public class MyFrame extends JFrame{
 		subjectText.setVisible(false);
 		subjectText.setFont(new Font("Comic Sans", Font.BOLD, 20));
 		
+		// 시험 응시 버튼 시각적 속성 설정
 		testButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		testButton.setVisible(false);
-		testButton.setBounds(50,20,100,50);
+		testButton.setBounds(334,196,106,48);
+		testButton.setBorderPainted(false);		//make the button transparent
+		testButton.setFont(new Font("Arial", Font.BOLD, 20));
+		testButton.setForeground(Color.WHITE);	//폰트 색 설정
 
 		selectAll.setHorizontalAlignment(JCheckBox.LEFT);
 		selectYN.setText("All/None");
@@ -179,7 +229,7 @@ public class MyFrame extends JFrame{
 		selectBox.add(selectAll);
 		selectBox.setVisible(false);
 		selectBox.setBackground(new Color(wordColor[0]));
-		selectBox.setBounds(388,80,94,20);
+		selectBox.setBounds(70,80,94,20);
 		selectBox.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
 		
 		selectImportant.setHorizontalAlignment(JCheckBox.LEFT);
@@ -191,15 +241,17 @@ public class MyFrame extends JFrame{
 		selectBox1.setBounds(102,80,94,20);
 		selectBox1.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
 		
+		//단어 삭제 버튼 시각적 속성
 		deleteSelectedWords.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		deleteSelectedWords.setVisible(false);
-		deleteSelectedWords.setBounds(170,20,100,50);
+		deleteSelectedWords.setBounds(163,196,100,50);
 
+		//단어 추가 버튼 시각적 속성
 		addWord.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		addWord.setVisible(false);
-		addWord.setBounds(290,20,100,50);
+		addWord.setBounds(43,196,100,50);
 
-		addSubjectButton.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+		addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		addSubjectButton.setFont(new Font("Comic Sans", Font.BOLD, 50));
 		addSubjectButton.setVisible(false);
 		addSubjectButton.setBackground(new Color(0x14A989));
@@ -245,17 +297,30 @@ public class MyFrame extends JFrame{
 			}
 			if(cntSubject<6) {
 				Subjects[cntSubject].setVisible(false);
-				subjectText.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+				subjectText.setBounds(36,286+(cntSubject)*102,408,84);
 				subjectText.setVisible(true);
-				if(cntSubject==6) //5개가 다 차면 더 이상 추가 못하게 막음
+				if(cntSubject==5) //5개가 다 차면 더 이상 추가 못하게 막음
 					addSubjectButton.setVisible(false);
 			}
 		});
 		
 		for(int i=0;i<6;i++) {
 			int k=i;
-			Subjects[i].addActionListener(e -> { //각 주제인 Subjects[i]가 눌렸을 때 
+			
+			//각 주제인 Subjects[i]가 눌렸을 때
+			Subjects[i].addActionListener(e -> {
 				currentSubject=k;
+				
+				//이전 페이지의 개체들을 모두 보이지 않게끔 설정
+				categoriesPanel.setVisible(false);
+				categoriesLabel.setVisible(false);
+				catTitleLabel.setVisible(false);
+				catDescriptionLabel.setVisible(false);
+				
+				//해당 과목 배경 이미지 visualize
+				subjectPanel.setVisible(true);
+				subjectLabel.setVisible(true);
+				subjectLabel.add(startButton);
 				
 				startButton.setVisible(true);
 				testButton.setVisible(true);
@@ -283,7 +348,7 @@ public class MyFrame extends JFrame{
 					cntSubject-=1;
 					Subjects[cntSubject].setVisible(false);
 					deleteSubjects[cntSubject].setVisible(false);
-					addSubjectButton.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 					if(cntSubject<6)
 						addSubjectButton.setVisible(true);
 				}
@@ -342,8 +407,11 @@ public class MyFrame extends JFrame{
 		
 		//메인화면으로 가기
 		startButton.addActionListener(e -> {
-			startButton.setBounds(510,20,70,50);
-			startButton.setText("<-");
+			
+			startButton.setBounds(41,41,64,64);
+			startButton.setBorderPainted(false);	//make startbutton transparent
+			
+			startButton.setText("");
 			startButton.setVisible(false);
 			testButton.setVisible(false);
 			deleteSelectedWords.setVisible(false);
@@ -351,11 +419,19 @@ public class MyFrame extends JFrame{
 			selectBox.setVisible(false);
 			selectBox1.setVisible(false);
 			selectAll.setSelected(false);
+			
+			//과목 선택 페이지에서 visualize 될 것들
+			categoriesPanel.setVisible(true);
+			categoriesLabel.setVisible(true);
+			catTitleLabel.setVisible(true);
+			catDescriptionLabel.setVisible(true);
+			
 			for(int i=0;i<cntSubject;i++) {
 				scroll_table[i].setVisible(false);
 				Subjects[i].setVisible(true);
 				deleteSubjects[i].setVisible(true);
 			}
+			
 			if(cntSubject<6)
 				addSubjectButton.setVisible(true);
 		});
@@ -442,7 +518,7 @@ public class MyFrame extends JFrame{
 			    	Subjects[cntSubject-1].setText(tempSubjectName);
 			    	deleteSubjects[cntSubject-1].setVisible(true);
 			    	subjectText.setText("");
-					addSubjectButton.setBounds(50+330*((cntSubject)%2),100+(cntSubject)/2*150,200,100);
+					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		    	}
 		    	if(cntSubject!=6)
 		    		addSubjectButton.setVisible(true);
@@ -458,7 +534,8 @@ public class MyFrame extends JFrame{
         this.setTitle("Fancy Note Pad");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(650,650);
+//        this.setSize(480,853);
+				this.setSize(480,853);	//창 크기 설정, 16:9 종횡비
         this.setLayout(null);
         this.setVisible(true);
         this.getContentPane().setBackground(new Color(0xf8b195));
@@ -468,13 +545,17 @@ public class MyFrame extends JFrame{
         label1.setVisible(true);
         this.add(label1);*/
         this.add(startButton);
-        this.add(addSubjectButton);
-        this.add(deleteSelectedWords);
-        this.add(subjectText);
-        this.add(testButton);
-        this.add(addWord);
-        this.add(selectBox);
-        this.add(selectBox1);
+        
+        
+        categoriesLabel.add(addSubjectButton);
+        subjectLabel.add(deleteSelectedWords);
+        categoriesLabel.add(subjectText);
+
+		//	배경 이미지 위에 버튼 추가
+				subjectLabel.add(testButton);
+				subjectLabel.add(addWord);
+				subjectLabel.add(selectBox);
+				subjectLabel.add(selectBox1);
         
         br.close();
         // 창 닫을 때 배열 안에 있는 값들을 text 파일에 저장
