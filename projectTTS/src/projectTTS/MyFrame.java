@@ -84,7 +84,7 @@ public class MyFrame extends JFrame{
 		//----------------------------//
 		
 		//해당 과목 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
-		subjectLabel.setIcon(categoriesImg);
+		subjectLabel.setIcon(subjectImg);
 		subjectLabel.setBounds(0,0,480,853);
 		subjectLabel.setVisible(true);
 		
@@ -94,6 +94,7 @@ public class MyFrame extends JFrame{
 		this.add(subjectPanel);
 		subjectPanel.add(subjectLabel);
 		
+		//과목 선택 화면 텍스트 설정
 		catTitleLabel.setVisible(false);
 		catTitleLabel.setFont(new Font("Comic Sans",Font.BOLD ,30));		//커스텀 폰트 어떻게?
 		catTitleLabel.setBounds(50,50,100,100);
@@ -179,7 +180,7 @@ public class MyFrame extends JFrame{
 		    wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
 		    wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
 		    wordTable[i].getColumnModel().getColumn(3).setPreferredWidth(50);
-	        this.add(scroll_table[i]);
+	        subjectLabel.add(scroll_table[i]);
 		}
 		
 		//버퍼 리더로 기존에 있는 값 불러와서 배열에 넣어주기
@@ -216,7 +217,7 @@ public class MyFrame extends JFrame{
 		
 		testButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		testButton.setVisible(false);
-		testButton.setBounds(50,20,100,50);
+		testButton.setBounds(70,20,100,50);
 
 		selectAll.setHorizontalAlignment(JCheckBox.LEFT);
 		selectYN.setText("All/None");
@@ -238,11 +239,11 @@ public class MyFrame extends JFrame{
 		
 		deleteSelectedWords.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		deleteSelectedWords.setVisible(false);
-		deleteSelectedWords.setBounds(170,20,100,50);
+		deleteSelectedWords.setBounds(190,20,100,50);
 
 		addWord.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		addWord.setVisible(false);
-		addWord.setBounds(290,20,100,50);
+		addWord.setBounds(310,20,100,50);
 
 		addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		addSubjectButton.setFont(new Font("Comic Sans", Font.BOLD, 50));
@@ -299,7 +300,9 @@ public class MyFrame extends JFrame{
 		
 		for(int i=0;i<6;i++) {
 			int k=i;
-			Subjects[i].addActionListener(e -> { //각 주제인 Subjects[i]가 눌렸을 때 
+			
+			//각 주제인 Subjects[i]가 눌렸을 때
+			Subjects[i].addActionListener(e -> {
 				currentSubject=k;
 				
 				//이전 페이지의 개체들을 모두 보이지 않게끔 설정
@@ -307,6 +310,11 @@ public class MyFrame extends JFrame{
 				categoriesLabel.setVisible(false);
 				catTitleLabel.setVisible(false);
 				catDescriptionLabel.setVisible(false);
+				
+				//해당 과목 배경 이미지 visualize
+				subjectPanel.setVisible(true);
+				subjectLabel.setVisible(true);
+				subjectLabel.add(startButton);
 				
 				startButton.setVisible(true);
 				testButton.setVisible(true);
@@ -393,8 +401,9 @@ public class MyFrame extends JFrame{
 		
 		//메인화면으로 가기
 		startButton.addActionListener(e -> {
-			startButton.setBounds(400,20,70,50);
-			startButton.setText("<-");
+			
+			startButton.setBounds(30,20,50,50);
+			startButton.setText("<");
 			startButton.setVisible(false);
 			testButton.setVisible(false);
 			deleteSelectedWords.setVisible(false);
@@ -531,12 +540,14 @@ public class MyFrame extends JFrame{
         
         
         categoriesLabel.add(addSubjectButton);
-        this.add(deleteSelectedWords);
+        subjectLabel.add(deleteSelectedWords);
         categoriesLabel.add(subjectText);
-        this.add(testButton);
-        this.add(addWord);
-        this.add(selectBox);
-        this.add(selectBox1);
+
+		//	배경 이미지 위에 버튼 추가
+				subjectLabel.add(testButton);
+				subjectLabel.add(addWord);
+				subjectLabel.add(selectBox);
+				subjectLabel.add(selectBox1);
         
         br.close();
         // 창 닫을 때 배열 안에 있는 값들을 text 파일에 저장
