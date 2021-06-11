@@ -55,7 +55,7 @@ public class MyFrame extends JFrame{
 		ImageIcon subjectImg = new ImageIcon("subject.png");	//과목 진입 후 화면 background image
 		JButton startButton = new JButton("시작");  	//처음 start 및 뒤로 가는 버튼
 		JButton addSubjectButton = new JButton("+"); 	//주제 추가 버튼
-		JButton testButton = new JButton("시험");    	//해당 과목에 있는 것들 테스트 버튼
+		JButton testButton = new JButton("TEST");    	//해당 과목에 있는 것들 테스트 버튼
 		JButton deleteSelectedWords = new JButton("삭제");	//해당 주제 삭제 버튼
 		JButton addWord = new JButton("추가");         	//해당 주제 테이블에 새로운 단어 추가 버튼
 		JCheckBox selectAll = new JCheckBox(); 
@@ -174,13 +174,13 @@ public class MyFrame extends JFrame{
 			wordTable[i].setBackground(new Color(wordColor[0]));
 			wordTable[i].setRowHeight(40);
 			scroll_table[i] = new JScrollPane(wordTable[i]);
-		    scroll_table[i].setVisible(false);
-		    scroll_table[i].setBounds(60,100,400,700);
-		    wordTable[i].getColumnModel().getColumn(0).setPreferredWidth(50);
-		    wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
-		    wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
-		    wordTable[i].getColumnModel().getColumn(3).setPreferredWidth(50);
-	        subjectLabel.add(scroll_table[i]);
+			scroll_table[i].setVisible(false);
+			scroll_table[i].setBounds(43,266,394,502);
+			wordTable[i].getColumnModel().getColumn(0).setPreferredWidth(50);
+			wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
+			wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
+			wordTable[i].getColumnModel().getColumn(3).setPreferredWidth(50);
+				subjectLabel.add(scroll_table[i]);
 		}
 		
 		//버퍼 리더로 기존에 있는 값 불러와서 배열에 넣어주기
@@ -215,9 +215,13 @@ public class MyFrame extends JFrame{
 		subjectText.setVisible(false);
 		subjectText.setFont(new Font("Comic Sans", Font.BOLD, 20));
 		
+		// 시험 응시 버튼 시각적 속성 설정
 		testButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		testButton.setVisible(false);
-		testButton.setBounds(70,20,100,50);
+		testButton.setBounds(334,196,106,48);
+		testButton.setBorderPainted(false);		//make the button transparent
+		testButton.setFont(new Font("Arial", Font.BOLD, 20));
+		testButton.setForeground(Color.WHITE);	//폰트 색 설정
 
 		selectAll.setHorizontalAlignment(JCheckBox.LEFT);
 		selectYN.setText("All/None");
@@ -225,7 +229,7 @@ public class MyFrame extends JFrame{
 		selectBox.add(selectAll);
 		selectBox.setVisible(false);
 		selectBox.setBackground(new Color(wordColor[0]));
-		selectBox.setBounds(388,80,94,20);
+		selectBox.setBounds(70,80,94,20);
 		selectBox.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
 		
 		selectImportant.setHorizontalAlignment(JCheckBox.LEFT);
@@ -237,13 +241,15 @@ public class MyFrame extends JFrame{
 		selectBox1.setBounds(102,80,94,20);
 		selectBox1.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
 		
+		//단어 삭제 버튼 시각적 속성
 		deleteSelectedWords.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		deleteSelectedWords.setVisible(false);
-		deleteSelectedWords.setBounds(190,20,100,50);
+		deleteSelectedWords.setBounds(163,196,100,50);
 
+		//단어 추가 버튼 시각적 속성
 		addWord.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		addWord.setVisible(false);
-		addWord.setBounds(310,20,100,50);
+		addWord.setBounds(43,196,100,50);
 
 		addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		addSubjectButton.setFont(new Font("Comic Sans", Font.BOLD, 50));
@@ -402,8 +408,10 @@ public class MyFrame extends JFrame{
 		//메인화면으로 가기
 		startButton.addActionListener(e -> {
 			
-			startButton.setBounds(30,20,50,50);
-			startButton.setText("<");
+			startButton.setBounds(41,41,64,64);
+			startButton.setBorderPainted(false);	//make startbutton transparent
+			
+			startButton.setText("");
 			startButton.setVisible(false);
 			testButton.setVisible(false);
 			deleteSelectedWords.setVisible(false);

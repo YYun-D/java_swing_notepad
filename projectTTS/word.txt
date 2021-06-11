@@ -4,7 +4,7 @@
 3
 4
 4
-false apple 사과
+ic_star.png apple 사과
 false null null
 false null null
 false null null
