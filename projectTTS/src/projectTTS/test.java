@@ -41,7 +41,7 @@ public class test extends JFrame  {
    JProgressBar cntBar = new JProgressBar(); // 진행 게이지바
    ImageIcon iconO = new ImageIcon("O.png");
    ImageIcon iconX = new ImageIcon("XX.png");
-   ImageIcon iconNote = new ImageIcon("tes1.png");
+   ImageIcon iconNote = new ImageIcon("1048.png");
    int testcnt;
    int[] currenttestnum = new int[100];
    int testcount;
