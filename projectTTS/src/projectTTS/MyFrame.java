@@ -37,53 +37,66 @@ public class MyFrame extends JFrame{
 	static int currentSubject;
 	String tempSubjectName;
 	String line;
-	Object[] columnNames = {"Áß¿äµµ","´Ü¾î","¶æ","¼±ÅÃ"};
-	Object[] voice = {"È®ÀÎ","Ãë¼Ò","À½¼ºÀÎ½Ä"};
+	Object[] columnNames = {"ì¤‘ìš”ë„","ë‹¨ì–´","ëœ»","ì„ íƒ"};
+	Object[] voice = {"í™•ì¸","ì·¨ì†Œ","ìŒì„±ì¸ì‹"};
 	JTable[] wordTable = new JTable[6];
 	static int[] wordColor= {0xFFFF66,0xCCFF00,0x50BFE6,0xFD5B78,0xFF6EFF,0xAF6E4D};
 	JScrollPane[] scroll_table = new JScrollPane[6];
 	
 	static int[] SubjectWordCnt= {0,0,0,0,0,0};
-	static ImageIcon icon2 = new ImageIcon("noteicon.png");
 	
 
 	MyFrame() throws IOException{
+		ImageIcon icon2 = new ImageIcon("noteIcon.png");
 		ImageIcon iconX = new ImageIcon("XX.png");
 		ImageIcon iconNote = new ImageIcon("img.png");
 		ImageIcon iconStar = new ImageIcon("ic_star.png");
-		ImageIcon categoriesImg = new ImageIcon("test.png");	//°ú¸ñ ¼±ÅÃ È­¸é background image
-		ImageIcon subjectImg = new ImageIcon("subject.png");	//°ú¸ñ ÁøÀÔ ÈÄ È­¸é background image
-		JButton startButton = new JButton("½ÃÀÛ");  	//Ã³À½ start ¹× µÚ·Î °¡´Â ¹öÆ°
-		JButton addSubjectButton = new JButton("+"); 	//ÁÖÁ¦ Ãß°¡ ¹öÆ°
-		JButton testButton = new JButton("TEST");    	//ÇØ´ç °ú¸ñ¿¡ ÀÖ´Â °Íµé Å×½ºÆ® ¹öÆ°
-		JButton deleteSelectedWords = new JButton("»èÁ¦");	//ÇØ´ç ÁÖÁ¦ »èÁ¦ ¹öÆ°
-		JButton addWord = new JButton("Ãß°¡");         	//ÇØ´ç ÁÖÁ¦ Å×ÀÌºí¿¡ »õ·Î¿î ´Ü¾î Ãß°¡ ¹öÆ°
+		ImageIcon startImg = new ImageIcon("hello.png");
+		ImageIcon categoriesImg = new ImageIcon("categories.png");	//ê³¼ëª© ì„ íƒ í™”ë©´ background image
+		ImageIcon subjectImg = new ImageIcon("subject.png");	//ê³¼ëª© ì§„ì… í›„ í™”ë©´ background image
+		JButton startButton = new JButton("START");  	//ì²˜ìŒ start ë° ë’¤ë¡œ ê°€ëŠ” ë²„íŠ¼
+		JButton addSubjectButton = new JButton("+"); 	//ì£¼ì œ ì¶”ê°€ ë²„íŠ¼
+		JButton testButton = new JButton("TEST");    	//í•´ë‹¹ ê³¼ëª©ì— ìˆëŠ” ê²ƒë“¤ í…ŒìŠ¤íŠ¸ ë²„íŠ¼
+		JButton deleteSelectedWords = new JButton("-");	//í•´ë‹¹ ì£¼ì œ ì‚­ì œ ë²„íŠ¼
+		JButton addWord = new JButton("+");         	//í•´ë‹¹ ì£¼ì œ í…Œì´ë¸”ì— ìƒˆë¡œìš´ ë‹¨ì–´ ì¶”ê°€ ë²„íŠ¼
 		JCheckBox selectAll = new JCheckBox(); 
 		JCheckBox selectImportant = new JCheckBox(); 
-		JTextField subjectText = new JTextField();     //ÁÖÁ¦ Ãß°¡ÇÒ ¶§ ¾²´Â ÅØ½ºÆ®ÇÊµå
+		JTextField subjectText = new JTextField();     //ì£¼ì œ ì¶”ê°€í•  ë•Œ ì“°ëŠ” í…ìŠ¤íŠ¸í•„ë“œ
 		JPanel selectBox= new JPanel();
 		JPanel selectBox1= new JPanel();
 		JLabel selectYN=new JLabel();
 		JLabel selectYN1=new JLabel();
-		JLabel categoriesLabel = new JLabel();		//JLabel for °ú¸ñ ¼±ÅÃ È­¸é background
-		JLabel subjectLabel = new JLabel();		//JLabel for °ú¸ñ ÁøÀÔ ÈÄ È­¸é background
-		JLabel catTitleLabel = new JLabel("Categories");		//ÁÖÁ¦ ¼±ÅÃ È­¸é-Á¦¸ñ
-		JLabel catDescriptionLabel = new JLabel("ÁÖÁ¦¸¦ ¼±ÅÃÇÏ°Å³ª »õ·Î¿î ÁÖÁ¦¸¦ Ãß°¡ÇÏ¼¼¿ä.");		//ÁÖÁ¦ ¼±ÅÃ È­¸é-¼³¸í
+		JLabel categoriesLabel = new JLabel();		//JLabel for ê³¼ëª© ì„ íƒ í™”ë©´ background
+		JLabel subjectLabel = new JLabel();		//JLabel for ê³¼ëª© ì§„ì… í›„ í™”ë©´ background
+		JLabel catTitleLabel = new JLabel("");		//ì£¼ì œ ì„ íƒ í™”ë©´-ì œëª©
+		JLabel catDescriptionLabel = new JLabel("");	//ì£¼ì œ ì„ íƒ í™”ë©´-ì„¤ëª…
+		JLabel startPageLabel = new JLabel("");
+//		JLabel subjectLabel=new JLabel("");
 		
-		//°ú¸ñ ¼±ÅÃ È­¸é background image »ğÀÔ À§ÇÑ ÆĞ³Î »ı¼º ¹× »çÀÌÁî ¼³Á¤
+		startPageLabel.setIcon(startImg);
+		startPageLabel.setBounds(0,0,480,853);
+		startPageLabel.setVisible(true);
+		
+		JPanel startPagePanel = new JPanel();
+		startPagePanel.setVisible(false);
+		startPagePanel.setBounds(0,-10,480,853);
+		this.add(startPagePanel);
+		startPagePanel.add(categoriesLabel);
+		
+		//ê³¼ëª© ì„ íƒ í™”ë©´ background image ì‚½ì… ìœ„í•œ íŒ¨ë„ ìƒì„± ë° ì‚¬ì´ì¦ˆ ì„¤ì •
 		categoriesLabel.setIcon(categoriesImg);
 		categoriesLabel.setBounds(0,0,480,853);
 		categoriesLabel.setVisible(true);
 
 		JPanel categoriesPanel = new JPanel();
-		categoriesPanel.setVisible(false);	//»ı¼º ½Ã¿£ visibility false, ½Ã°¢È­ÇÒ ¶§¸¸ true ¼³Á¤
+		categoriesPanel.setVisible(false);	//ìƒì„± ì‹œì—” visibility false, ì‹œê°í™”í•  ë•Œë§Œ true ì„¤ì •
 		categoriesPanel.setBounds(0,-10,480,853);
 		this.add(categoriesPanel);
 		categoriesPanel.add(categoriesLabel);
 		
 		//----------------------------//
 		
-		//ÇØ´ç °ú¸ñ È­¸é background image »ğÀÔ À§ÇÑ ÆĞ³Î »ı¼º ¹× »çÀÌÁî ¼³Á¤
+		//í•´ë‹¹ ê³¼ëª© í™”ë©´ background image ì‚½ì… ìœ„í•œ íŒ¨ë„ ìƒì„± ë° ì‚¬ì´ì¦ˆ ì„¤ì •
 		subjectLabel.setIcon(subjectImg);
 		subjectLabel.setBounds(0,0,480,853);
 		subjectLabel.setVisible(true);
@@ -94,40 +107,42 @@ public class MyFrame extends JFrame{
 		this.add(subjectPanel);
 		subjectPanel.add(subjectLabel);
 		
-		//°ú¸ñ ¼±ÅÃ È­¸é ÅØ½ºÆ® ¼³Á¤
+		//ê³¼ëª© ì„ íƒ í™”ë©´ í…ìŠ¤íŠ¸ ì„¤ì •
 		catTitleLabel.setVisible(false);
-		catTitleLabel.setFont(new Font("Comic Sans",Font.BOLD ,30));		//Ä¿½ºÅÒ ÆùÆ® ¾î¶»°Ô?
-		catTitleLabel.setBounds(50,20,300,100);
-		categoriesLabel.add(catTitleLabel);		//¹è°æ À§¿¡ ÅØ½ºÆ®¸¦ ¾ñ¾îÁÖ±â À§ÇÔ
+		catTitleLabel.setFont(new Font("Comic Sans",Font.BOLD ,30));		//ì»¤ìŠ¤í…€ í°íŠ¸ ì–´ë–»ê²Œ?
+		catTitleLabel.setBounds(50,50,300,100);
+		categoriesLabel.add(catTitleLabel);		//ë°°ê²½ ìœ„ì— í…ìŠ¤íŠ¸ë¥¼ ì–¹ì–´ì£¼ê¸° ìœ„í•¨
 		
 		catDescriptionLabel.setVisible(false);
-		catDescriptionLabel.setFont(new Font("Apple SD Gothic Neo", Font.BOLD,20));
-		catDescriptionLabel.setBounds(20,70,450,100);
+		catDescriptionLabel.setFont(new Font("Apple SD Gothic Neo", Font.PLAIN,30));
+		catDescriptionLabel.setBounds(50,70,100,100);
 		categoriesLabel.add(catDescriptionLabel);
 		
-		//SubjectWord¶ó´Â °¢ ÁÖÁ¦ º° ´Ü¾î ÀúÀå¿ë ¹è¿­ »ı¼º
+		//SubjectWordë¼ëŠ” ê° ì£¼ì œ ë³„ ë‹¨ì–´ ì €ì¥ìš© ë°°ì—´ ìƒì„±
 		for(int i=0;i<6;i++) 
 			SubjectWord[i]=new Object[100][4];
-		//Subjects¶ó´Â °¢ ÁÖÁ¦ º° ¸ŞÀÎ È­¸é¿¡¼­ Å¬¸¯ÇÒ ¹öÆ° »ı¼º
+		//Subjectsë¼ëŠ” ê° ì£¼ì œ ë³„ ë©”ì¸ í™”ë©´ì—ì„œ í´ë¦­í•  ë²„íŠ¼ ìƒì„±
 		for(int i=0;i<6;i++) {
 			Subjects[i] = new JButton();
 			Subjects[i].setVisible(false);
 			Subjects[i].setBackground(new Color(wordColor[i]));
 			Subjects[i].setFont(new Font("Comic Sans", Font.BOLD, 30));
-			Subjects[i].setBounds(36,286+(i)*102,358,84);
+			Subjects[i].setBounds(36,286+(i)*102,408,84);
 			
 //			this.add(Subjects[i]);
 			categoriesLabel.add(Subjects[i]);
+//			subjectLabel.add(Subjects[i]);
+			
 			deleteSubjects[i]=new JButton();
 			deleteSubjects[i].setVisible(false);
 			deleteSubjects[i].setBackground(new Color(wordColor[i]));
 			deleteSubjects[i].setIcon(iconX);
-			deleteSubjects[i].setBounds(400,286+(i)*102,30,30);
+			deleteSubjects[i].setBounds(440,286+(i)*102,30,30);
 //			this.add(deleteSubjects[i]);
 			categoriesLabel.add(deleteSubjects[i]);
 		}
 		
-		//Subjects ´­·¶À» ¶§ º¸¿©Áö´Â ½ºÅ©·Ñ °¡´ÉÇÑ Å×ÀÌºí »ı¼º
+		//Subjects ëˆŒë €ì„ ë•Œ ë³´ì—¬ì§€ëŠ” ìŠ¤í¬ë¡¤ ê°€ëŠ¥í•œ í…Œì´ë¸” ìƒì„±
 		for(int i=0;i<6;i++) {
 			wordTable[i] = new JTable(SubjectWord[i],columnNames) {
 				@Override
@@ -170,12 +185,12 @@ public class MyFrame extends JFrame{
 			    }
 			});
 			wordTable[i].setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-			wordTable[i].setFont(new Font("µ¸¿òÃ¼", Font.BOLD, 15));
+			wordTable[i].setFont(new Font("ë‹ì›€ì²´", Font.BOLD, 15));
 			wordTable[i].setBackground(new Color(wordColor[0]));
 			wordTable[i].setRowHeight(40);
 			scroll_table[i] = new JScrollPane(wordTable[i]);
 			scroll_table[i].setVisible(false);
-			scroll_table[i].setBounds(43,266,394,502);
+			scroll_table[i].setBounds(43,276,394,502);
 			wordTable[i].getColumnModel().getColumn(0).setPreferredWidth(50);
 			wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
 			wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
@@ -183,7 +198,7 @@ public class MyFrame extends JFrame{
 				subjectLabel.add(scroll_table[i]);
 		}
 		
-		//¹öÆÛ ¸®´õ·Î ±âÁ¸¿¡ ÀÖ´Â °ª ºÒ·¯¿Í¼­ ¹è¿­¿¡ ³Ö¾îÁÖ±â
+		//ë²„í¼ ë¦¬ë”ë¡œ ê¸°ì¡´ì— ìˆëŠ” ê°’ ë¶ˆëŸ¬ì™€ì„œ ë°°ì—´ì— ë„£ì–´ì£¼ê¸°
 		int wordcnt=0;
 		int subjectcnt=0;
 		line = br.readLine();
@@ -215,13 +230,13 @@ public class MyFrame extends JFrame{
 		subjectText.setVisible(false);
 		subjectText.setFont(new Font("Comic Sans", Font.BOLD, 20));
 		
-		// ½ÃÇè ÀÀ½Ã ¹öÆ° ½Ã°¢Àû ¼Ó¼º ¼³Á¤
+		// ì‹œí—˜ ì‘ì‹œ ë²„íŠ¼ ì‹œê°ì  ì†ì„± ì„¤ì •
 		testButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		testButton.setVisible(false);
 		testButton.setBounds(334,196,106,48);
 		testButton.setBorderPainted(false);		//make the button transparent
 		testButton.setFont(new Font("Arial", Font.BOLD, 20));
-		testButton.setForeground(Color.WHITE);	//ÆùÆ® »ö ¼³Á¤
+		testButton.setForeground(Color.WHITE);	//í°íŠ¸ ìƒ‰ ì„¤ì •
 
 		selectAll.setHorizontalAlignment(JCheckBox.LEFT);
 		selectYN.setText("All/None");
@@ -229,40 +244,42 @@ public class MyFrame extends JFrame{
 		selectBox.add(selectAll);
 		selectBox.setVisible(false);
 		selectBox.setBackground(new Color(wordColor[0]));
-		selectBox.setBounds(70,80,94,20);
+		selectBox.setBounds(343,258,94,20);
 		selectBox.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
 		
-		selectImportant.setHorizontalAlignment(JCheckBox.LEFT);
-		selectYN1.setText("All/None");
-		selectBox1.add(selectYN1);
-		selectBox1.add(selectImportant);
-		selectBox1.setVisible(false);
-		//selectBox1.setBackground(new Color(wordColor[0]));
-		selectBox1.setBounds(102,80,94,20);
-		selectBox1.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
+//		selectImportant.setHorizontalAlignment(JCheckBox.LEFT);
+//		selectYN1.setText("All/None");
+//		selectBox1.add(selectYN1);
+//		selectBox1.add(selectImportant);
+//		selectBox1.setVisible(false);
+//		//selectBox1.setBackground(new Color(wordColor[0]));
+//		selectBox1.setBounds(200,200,94,20);
+//		selectBox1.setBorder(BorderFactory.createEmptyBorder(-5, 0, 0, 0));
 		
-		//´Ü¾î »èÁ¦ ¹öÆ° ½Ã°¢Àû ¼Ó¼º
-		deleteSelectedWords.setFont(new Font("Comic Sans", Font.BOLD, 30));
+		//ë‹¨ì–´ ì‚­ì œ ë²„íŠ¼ ì‹œê°ì  ì†ì„±
+		deleteSelectedWords.setFont(new Font("Comic Sans", Font.BOLD, 25));
 		deleteSelectedWords.setVisible(false);
-		deleteSelectedWords.setBounds(163,196,100,50);
+		deleteSelectedWords.setBounds(100,187,65,65);
+		deleteSelectedWords.setBorderPainted(false);
 
-		//´Ü¾î Ãß°¡ ¹öÆ° ½Ã°¢Àû ¼Ó¼º
-		addWord.setFont(new Font("Comic Sans", Font.BOLD, 30));
+		//ë‹¨ì–´ ì¶”ê°€ ë²„íŠ¼ ì‹œê°ì  ì†ì„±
+		addWord.setFont(new Font("Comic Sans", Font.BOLD, 25));
 		addWord.setVisible(false);
-		addWord.setBounds(43,196,100,50);
+		addWord.setBounds(38,186,65,65);
+		addWord.setBorderPainted(false);
 
-		addSubjectButton.setBounds(36,286+(cntSubject)*102,358,84);
+		addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		addSubjectButton.setFont(new Font("Comic Sans", Font.BOLD, 50));
 		addSubjectButton.setVisible(false);
 		addSubjectButton.setBackground(new Color(0x14A989));
 		
-		startButton.setBounds(150,450,180,100);
+		startButton.setBounds(225,400,180,100);
 		startButton.setFocusable(false);
 		startButton.setVerticalTextPosition(JButton.BOTTOM);
 		startButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		startButton.setBackground(new Color(0xFFFFFF));
+		startButton.setBackground(new Color(0x14A989));
 		
-		// Å×½ºÆ® ¹öÆ°
+		// í…ŒìŠ¤íŠ¸ ë²„íŠ¼
 		testButton.addActionListener(e -> {
 			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
 				if((Boolean)SubjectWord[currentSubject][i][3]==true) {
@@ -282,13 +299,13 @@ public class MyFrame extends JFrame{
 					break;
 				}
 				else if(i==SubjectWordCnt[currentSubject]-1) {
-					JOptionPane.showMessageDialog(this,"Å×½ºÆ®¸¦ ÇÒ ´Ü¾î¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä."); 
+					JOptionPane.showMessageDialog(this,"í…ŒìŠ¤íŠ¸ë¥¼ í•  ë‹¨ì–´ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”."); 
 				}
 			}
 			
 		});
 		
-		//»õ·Î¿î ÁÖÁ¦ Ãß°¡ÇÏ±â ¹öÆ°
+		//ìƒˆë¡œìš´ ì£¼ì œ ì¶”ê°€í•˜ê¸° ë²„íŠ¼
 		addSubjectButton.addActionListener(e -> {
 			addSubjectButton.setVisible(false);
 			for(int i=0;i<cntSubject;i++) {
@@ -297,9 +314,9 @@ public class MyFrame extends JFrame{
 			}
 			if(cntSubject<6) {
 				Subjects[cntSubject].setVisible(false);
-				subjectText.setBounds(36,286+(cntSubject)*102,358,84);
+				subjectText.setBounds(36,286+(cntSubject)*102,408,84);
 				subjectText.setVisible(true);
-				if(cntSubject==5) //5°³°¡ ´Ù Â÷¸é ´õ ÀÌ»ó Ãß°¡ ¸øÇÏ°Ô ¸·À½
+				if(cntSubject==5) //5ê°œê°€ ë‹¤ ì°¨ë©´ ë” ì´ìƒ ì¶”ê°€ ëª»í•˜ê²Œ ë§‰ìŒ
 					addSubjectButton.setVisible(false);
 			}
 		});
@@ -307,20 +324,25 @@ public class MyFrame extends JFrame{
 		for(int i=0;i<6;i++) {
 			int k=i;
 			
-			//°¢ ÁÖÁ¦ÀÎ Subjects[i]°¡ ´­·ÈÀ» ¶§
+			//ê° ì£¼ì œì¸ Subjects[i]ê°€ ëˆŒë ¸ì„ ë•Œ
 			Subjects[i].addActionListener(e -> {
 				currentSubject=k;
 				
-				//ÀÌÀü ÆäÀÌÁöÀÇ °³Ã¼µéÀ» ¸ğµÎ º¸ÀÌÁö ¾Ê°Ô²û ¼³Á¤
+				//ì´ì „ í˜ì´ì§€ì˜ ê°œì²´ë“¤ì„ ëª¨ë‘ ë³´ì´ì§€ ì•Šê²Œë” ì„¤ì •
 				categoriesPanel.setVisible(false);
 				categoriesLabel.setVisible(false);
 				catTitleLabel.setVisible(false);
 				catDescriptionLabel.setVisible(false);
 				
-				//ÇØ´ç °ú¸ñ ¹è°æ ÀÌ¹ÌÁö visualize
+				//í•´ë‹¹ ê³¼ëª© ë°°ê²½ ì´ë¯¸ì§€ visualize
 				subjectPanel.setVisible(true);
 				subjectLabel.setVisible(true);
 				subjectLabel.add(startButton);
+				
+//				subjectLabel.add(subjectText);
+//				subjectText.setVisible(true);
+//				subjectText.setBounds(36,60,408,84);
+//				subjectText.setBorderPainted(false);
 				
 				startButton.setVisible(true);
 				testButton.setVisible(true);
@@ -335,9 +357,9 @@ public class MyFrame extends JFrame{
 				selectBox.setVisible(true);
 				selectBox1.setVisible(true);
 			});
-			deleteSubjects[i].addActionListener(e -> { //¿·¿¡ ÀÖ´Â Á¶±×¸¶ÇÑ ²ÅÇ¥·Î ÇØ´ç ÁÖÁ¦¸¦ ´Ù Áö¿ï ¶§
+			deleteSubjects[i].addActionListener(e -> { //ì˜†ì— ìˆëŠ” ì¡°ê·¸ë§ˆí•œ ê¼½í‘œë¡œ í•´ë‹¹ ì£¼ì œë¥¼ ë‹¤ ì§€ìš¸ ë•Œ
 				currentSubject=k;
-				int a=JOptionPane.showConfirmDialog(this,"ÇØ´ç ÁÖÁ¦ ¹× ÁÖÁ¦ ¾È¿¡ ÀÖ´Â ´Ü¾î¸¦ ¸ğµÎ Áö¿ì½Ã°Ú½À´Ï±î?"); 
+				int a=JOptionPane.showConfirmDialog(this,"í•´ë‹¹ ì£¼ì œ ë° ì£¼ì œ ì•ˆì— ìˆëŠ” ë‹¨ì–´ë¥¼ ëª¨ë‘ ì§€ìš°ì‹œê² ìŠµë‹ˆê¹Œ?"); 
 				if(a==JOptionPane.YES_OPTION){  
 					for(int l=currentSubject;l<5;l++) {
 						Subjects[l].setText(Subjects[l+1].getText());
@@ -349,14 +371,14 @@ public class MyFrame extends JFrame{
 					Subjects[cntSubject].setVisible(false);
 					deleteSubjects[cntSubject].setVisible(false);
 					SubjectWordCnt[cntSubject]=0;
-					addSubjectButton.setBounds(36,286+(cntSubject)*102,358,84);
+					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 					if(cntSubject<6)
 						addSubjectButton.setVisible(true);
 				}
 			});
 			
 		}
-		//´Ü¾î ÀüÃ¼ ¼±ÅÃ Ã¼Å©¹Ú½º
+		//ë‹¨ì–´ ì „ì²´ ì„ íƒ ì²´í¬ë°•ìŠ¤
 		selectAll.addActionListener(e -> {
 			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
 				if(selectAll.isSelected())
@@ -368,7 +390,7 @@ public class MyFrame extends JFrame{
 			scroll_table[currentSubject].setVisible(true);
 			
 		});
-		//Áß¿äµµ ´Ü¾î ÀüÃ¼ ¼±ÅÃ Ã¼Å©¹Ú½º
+		//ì¤‘ìš”ë„ ë‹¨ì–´ ì „ì²´ ì„ íƒ ì²´í¬ë°•ìŠ¤
 		selectImportant.addActionListener(e -> {
 			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
 				if(selectImportant.isSelected()) {
@@ -384,7 +406,7 @@ public class MyFrame extends JFrame{
 			scroll_table[currentSubject].setVisible(true);
 			
 		});
-		//Ã¼Å©µÈ ´Ü¾î »èÁ¦ÇÏ±â
+		//ì²´í¬ëœ ë‹¨ì–´ ì‚­ì œí•˜ê¸°
 		deleteSelectedWords.addActionListener(e -> {
 			int cnt=0;
 			int tmp = SubjectWordCnt[currentSubject];
@@ -400,13 +422,13 @@ public class MyFrame extends JFrame{
 				cnt++;
 			}
 			if (cnt==SubjectWordCnt[currentSubject]) {
-				JOptionPane.showMessageDialog(this,"»èÁ¦ÇÒ ´Ü¾î¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä."); 
+				JOptionPane.showMessageDialog(this,"ì‚­ì œí•  ë‹¨ì–´ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”."); 
 			}
 			scroll_table[currentSubject].setVisible(false);
 			scroll_table[currentSubject].setVisible(true);
 		});
 		
-		//¸ŞÀÎÈ­¸éÀ¸·Î °¡±â
+		//ë©”ì¸í™”ë©´ìœ¼ë¡œ ê°€ê¸°
 		startButton.addActionListener(e -> {
 			
 			startButton.setBounds(41,41,64,64);
@@ -421,7 +443,7 @@ public class MyFrame extends JFrame{
 			selectBox1.setVisible(false);
 			selectAll.setSelected(false);
 			
-			//°ú¸ñ ¼±ÅÃ ÆäÀÌÁö¿¡¼­ visualize µÉ °Íµé
+			//ê³¼ëª© ì„ íƒ í˜ì´ì§€ì—ì„œ visualize ë  ê²ƒë“¤
 			categoriesPanel.setVisible(true);
 			categoriesLabel.setVisible(true);
 			catTitleLabel.setVisible(true);
@@ -438,24 +460,24 @@ public class MyFrame extends JFrame{
 		});
 		
 		
-		// ´Ü¾î Ãß°¡ ¹öÆ° ¸¸µé±â
+		// ë‹¨ì–´ ì¶”ê°€ ë²„íŠ¼ ë§Œë“¤ê¸°
 		addWord.addActionListener(e -> {
 			JTextField WordField = new JTextField(10);
 			JTextField MeanField = new JTextField(10);
 
 			JPanel myPanel = new JPanel();
-			myPanel.add(new JLabel("´Ü¾î:"));
+			myPanel.add(new JLabel("ë‹¨ì–´:"));
 			myPanel.add(WordField);
 			myPanel.add(Box.createHorizontalStrut(20));
-			myPanel.add(new JLabel("¶æ:"));
+			myPanel.add(new JLabel("ëœ»:"));
 			myPanel.add(MeanField);
-			int result = JOptionPane.showOptionDialog(null, myPanel, "ÀÔ·ÂÇÒ ´Ü¾î¿Í ¶æ ÀÔ·Â", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE, iconStar, voice, null);
+			int result = JOptionPane.showOptionDialog(null, myPanel, "ì…ë ¥í•  ë‹¨ì–´ì™€ ëœ» ì…ë ¥", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE, iconStar, voice, null);
   
 			if (result == JOptionPane.OK_OPTION) {
 				String Word = WordField.getText();
 				String Mean = MeanField.getText();
 				if(Word.equals("") || Mean.equals(""))
-					JOptionPane.showMessageDialog(this,"Á¦´ë·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä."); 
+					JOptionPane.showMessageDialog(this,"ì œëŒ€ë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”."); 
 				else {
 					SubjectWord[currentSubject][SubjectWordCnt[currentSubject]][0]=Boolean.FALSE;
 					SubjectWord[currentSubject][SubjectWordCnt[currentSubject]][1]=Word;
@@ -465,17 +487,17 @@ public class MyFrame extends JFrame{
 					scroll_table[currentSubject].setVisible(true);
 				}
 			}
-		  	if (result == 2) { // À½¼ºÀÎ½ÄÀÌ °ñ¶óÁ³À» ¶§
+		  	if (result == 2) { // ìŒì„±ì¸ì‹ì´ ê³¨ë¼ì¡Œì„ ë•Œ
 		  		SubjectWord[currentSubject][SubjectWordCnt[currentSubject]][0]=Boolean.FALSE;
 		  		str=null;
 		  		String tmp1=null;
 		  		String tmp2=null;
 		  		int tmp3=-1;
-		  		JOptionPane.showMessageDialog(myPanel, "OK¸¦ ´­·¯ ´Ü¾î À½¼ºÀÎ½Ä ½ÃÀÛ", null, 1);
+		  		JOptionPane.showMessageDialog(myPanel, "OKë¥¼ ëˆŒëŸ¬ ë‹¨ì–´ ìŒì„±ì¸ì‹ ì‹œì‘", null, 1);
 				try {
 					while(str==null) {
 						streamingMicRecognize(0);
-						if(str==null) tmp3= JOptionPane.showConfirmDialog(this, "Á¦´ë·Î ÀÎ½ÄÀÌ ¾ÈµÆ½À´Ï´Ù. ´Ù½Ã ÇÏ½Ã°Ú½À´Ï±î?"); 
+						if(str==null) tmp3= JOptionPane.showConfirmDialog(this, "ì œëŒ€ë¡œ ì¸ì‹ì´ ì•ˆëìŠµë‹ˆë‹¤. ë‹¤ì‹œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"); 
 						else tmp3=0;
 						if(tmp3!=0) return;
 					}
@@ -484,11 +506,11 @@ public class MyFrame extends JFrame{
 				    e1.printStackTrace();
 				}
 				str=null;
-				JOptionPane.showMessageDialog(myPanel, "OK¸¦ ´­·¯ ¶æ(ÇÑ±¹¾î) À½¼ºÀÎ½Ä ½ÃÀÛ", null, 1);
+				JOptionPane.showMessageDialog(myPanel, "OKë¥¼ ëˆŒëŸ¬ ëœ»(í•œêµ­ì–´) ìŒì„±ì¸ì‹ ì‹œì‘", null, 1);
 				try {
 					while(str==null) {
 						streamingMicRecognize(1);
-						if(str==null) tmp3= JOptionPane.showConfirmDialog(this, "Á¦´ë·Î ÀÎ½ÄÀÌ ¾ÈµÆ½À´Ï´Ù. ´Ù½Ã ÇÏ½Ã°Ú½À´Ï±î?"); 
+						if(str==null) tmp3= JOptionPane.showConfirmDialog(this, "ì œëŒ€ë¡œ ì¸ì‹ì´ ì•ˆëìŠµë‹ˆë‹¤. ë‹¤ì‹œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"); 
 						else tmp3=0;
 						if(tmp3!=0) return;
 					}
@@ -505,7 +527,7 @@ public class MyFrame extends JFrame{
 			}
 		});
 		
-        //TextField¿¡ Ãß°¡ ÇÒ ÁÖÁ¦ÀÇ ÀÌ¸§À» ÀÔ·Â¹Ş¾ÒÀ» ¶§, ±× ÀÌ¸§À» °¡Áø ÁÖÁ¦ ¹öÆ° ¸¸µé±â
+        //TextFieldì— ì¶”ê°€ í•  ì£¼ì œì˜ ì´ë¦„ì„ ì…ë ¥ë°›ì•˜ì„ ë•Œ, ê·¸ ì´ë¦„ì„ ê°€ì§„ ì£¼ì œ ë²„íŠ¼ ë§Œë“¤ê¸°
 		subjectText.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -519,7 +541,7 @@ public class MyFrame extends JFrame{
 			    	Subjects[cntSubject-1].setText(tempSubjectName);
 			    	deleteSubjects[cntSubject-1].setVisible(true);
 			    	subjectText.setText("");
-					addSubjectButton.setBounds(36,286+(cntSubject)*102,358,84);
+					addSubjectButton.setBounds(36,286+(cntSubject)*102,408,84);
 		    	}
 		    	if(cntSubject!=6)
 		    		addSubjectButton.setVisible(true);
@@ -536,34 +558,36 @@ public class MyFrame extends JFrame{
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        this.setSize(480,853);
-				this.setSize(480,853);	//Ã¢ Å©±â ¼³Á¤, 16:9 Á¾È¾ºñ
+				this.setSize(480,853);	//ì°½ í¬ê¸° ì„¤ì •, 16:9 ì¢…íš¡ë¹„
         this.setLayout(null);
         this.setVisible(true);
-        this.getContentPane().setBackground(new Color(0xf8b195));
+//        this.getContentPane().setBackground(new Color(0xf8b195));
         /*JLabel label1 = new JLabel();
         label1.setIcon(iconNote);
         label1.setBounds(0,0,640,650);
         label1.setVisible(true);
         this.add(label1);*/
+				startPagePanel.setVisible(true);
+        startPageLabel.add(startButton);
         
         
         categoriesLabel.add(addSubjectButton);
         subjectLabel.add(deleteSelectedWords);
         categoriesLabel.add(subjectText);
 
-		//	¹è°æ ÀÌ¹ÌÁö À§¿¡ ¹öÆ° Ãß°¡
-		subjectLabel.add(testButton);
-		subjectLabel.add(addWord);
-		subjectLabel.add(selectBox);
-		subjectLabel.add(selectBox1);
-		categoriesPanel.setVisible(true);
-		categoriesLabel.setVisible(true);
-		catTitleLabel.setVisible(false);
-		catDescriptionLabel.setVisible(false);
-        categoriesLabel.add(startButton);
-        //startButton.setVisible(true);
+		//	ë°°ê²½ ì´ë¯¸ì§€ ìœ„ì— ë²„íŠ¼ ì¶”ê°€
+				subjectLabel.add(testButton);
+				subjectLabel.add(addWord);
+				subjectLabel.add(selectBox);
+				subjectLabel.add(selectBox1);
+				
+//				subjectLabel.add(subjectText);
+//				subjectText.setVisible(true);
+//				subjectText.setBounds(36,60,408,84);
+//				subjectText.setBorderPainted(false);
+        
         br.close();
-        // Ã¢ ´İÀ» ¶§ ¹è¿­ ¾È¿¡ ÀÖ´Â °ªµéÀ» text ÆÄÀÏ¿¡ ÀúÀå
+        // ì°½ ë‹«ì„ ë•Œ ë°°ì—´ ì•ˆì— ìˆëŠ” ê°’ë“¤ì„ text íŒŒì¼ì— ì €ì¥
         this.addWindowListener(new java.awt.event.WindowAdapter() {
 	        @Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent){
