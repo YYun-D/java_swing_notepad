@@ -25,21 +25,18 @@ import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.protobuf.ByteString;
 
 public class test extends JFrame  {
-	
 
     JLabel label1 = new JLabel();
-	AudioConfig audioConfig =AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.LINEAR16).build();
-	RoundedButton wordButton = new RoundedButton("´Ü¾î ½ÃÇè"); //´Ü¾î ½ÃÇè ¹öÆ°
-	RoundedButton meanButton = new RoundedButton("¶æ ½ÃÇè"); // ¶æ ½ÃÇè ¹öÆ°
-	ButtonGroup group = new ButtonGroup();
-	//JButton startButton1 = new JButton("Start"); // start ¹öÆ°
-	RoundedButton submitButton = new RoundedButton("Á¦Ãâ"); // submit ¹öÆ°
-	JTextField testField = new JTextField(); // ÀÔ·Â ÅØ½ºÆ®ÇÊµå
-	JLabel wordLabel = new JLabel(); // ¹®Á¦ ¶ç¿ì´Â ¶óº§
+	//AudioConfig audioConfig =AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.LINEAR16).build();
+	RoundedButton wordButton = new RoundedButton("ë‹¨ì–´ ì‹œí—˜"); //ë‹¨ì–´ ì‹œí—˜ ë²„íŠ¼
+	RoundedButton meanButton = new RoundedButton("ëœ» ì‹œí—˜"); // ëœ» ì‹œí—˜ ë²„íŠ¼
+	RoundedButton submitButton = new RoundedButton("ì œì¶œ"); // submit ë²„íŠ¼
+	JTextField testField = new JTextField(); // ì…ë ¥ í…ìŠ¤íŠ¸í•„ë“œ
+	JLabel wordLabel = new JLabel(); // ë¬¸ì œ ë„ìš°ëŠ” ë¼ë²¨
 	
 	Object [][]wrong = new Object[100][3];
-	JScrollPane scrolltable = new JScrollPane();
-	JProgressBar cntBar = new JProgressBar(); // ÁøÇà °ÔÀÌÁö¹Ù
+	JScrollPane scrolltable = new JScrollPane(); // ì‹œí—˜ ëì— ì •ë‹µ í™•ì¸í•˜ëŠ” í…Œì´ë¸”
+	JProgressBar cntBar = new JProgressBar(); // ì§„í–‰ ê²Œì´ì§€ë°”
 	ImageIcon iconO = new ImageIcon("O.png");
 	ImageIcon iconX = new ImageIcon("XX.png");
 	ImageIcon iconNote = new ImageIcon("blue.jpg");
@@ -49,13 +46,14 @@ public class test extends JFrame  {
 	int testcount;
 	int result;
 	static int WordMean=-1;
-	List<Integer> array = new ArrayList<>();
+	List<Integer> array = new ArrayList<>(); // ì‹œí—˜ì¹  ë‹¨ì–´ë¥¼ ì €ì¥í•  list
 	test() throws IOException, LineUnavailableException, UnsupportedAudioFileException{
 		
 		JRootPane  rootPane  =  this.getRootPane();
-	    rootPane.setDefaultButton(submitButton);  
-		Object[] column = {"(O,X)","´Ü¾î","¶æ"};
-		// ½ÃÇè ³¡¿¡ Á¤´ä È®ÀÎÇÏ´Â Å×ÀÌºí »ı¼º
+		rootPane.setDefaultButton(submitButton);
+		Object[] column = {"(O,X)","ë‹¨ì–´","ëœ»"};
+		
+		// ì‹œí—˜ ëì— ì •ë‹µ í™•ì¸í•˜ëŠ” í…Œì´ë¸” ìƒì„±
 		JTable wrongTable = new JTable(wrong,column) {
 			@Override
 			public Class getColumnClass(int column) {
@@ -75,22 +73,19 @@ public class test extends JFrame  {
 		    }
 		};
 		wrongTable.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		wrongTable.setFont(new Font("µ¸¿òÃ¼", Font.BOLD, 20));
+		wrongTable.setFont(new Font("ë‹ì›€ì²´", Font.BOLD, 20));
 		wrongTable.setBackground(new Color(MyFrame.wordColor[0]));
-	    wrongTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-	    wrongTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-	    wrongTable.getColumnModel().getColumn(2).setPreferredWidth(150);
-	    wrongTable.setRowHeight(40);
+		wrongTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+		wrongTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+		wrongTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+		wrongTable.setRowHeight(40);
 		scrolltable = new JScrollPane(wrongTable);
-	    scrolltable.setVisible(false);
-	    scrolltable.setBounds(0,50,465,700);
-        this.add(scrolltable);
-        
-		group.add(wordButton);
-		group.add(meanButton);
+		scrolltable.setVisible(false);
+		scrolltable.setBounds(0,50,465,700);
+        	this.add(scrolltable);
+
 		wordButton.setBounds(135, 205, 200, 100);
 		meanButton.setBounds(135, 355, 200, 100);
-	//	startButton1.setBounds(180, 300, 200, 50);
 		submitButton.setBounds(143, 600, 190, 74);
 		testField.setBounds(143, 420, 195, 70);
 		wordLabel.setBounds(0, 187, 480, 80);
@@ -99,11 +94,10 @@ public class test extends JFrame  {
 		wordLabel.setBackground(Color.WHITE);
 		cntBar.setBounds(300,30,150,40);
 		 
-		// ±ÛÀÚ ÆùÆ®
-		wordButton.setFont(new Font("ÇÔÃÊ·Òµ¸¿ò", Font.BOLD, 30));
-		meanButton.setFont(new Font("ÇÔÃÊ·Òµ¸¿ò", Font.BOLD, 30));
-		//startButton1.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		testField.setFont(new Font("ÇÔÃÊ·Òµ¸¿ò", Font.BOLD, 30));
+		// ê¸€ì í°íŠ¸
+		wordButton.setFont(new Font("í•¨ì´ˆë¡¬ë‹ì›€", Font.BOLD, 30));
+		meanButton.setFont(new Font("í•¨ì´ˆë¡¬ë‹ì›€", Font.BOLD, 30));
+		testField.setFont(new Font("í•¨ì´ˆë¡¬ë‹ì›€", Font.BOLD, 30));
 		submitButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		wordLabel.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		cntBar.setFont(new Font("Comic Sans", Font.BOLD, 30));
@@ -113,24 +107,22 @@ public class test extends JFrame  {
 		wordLabel.setVisible(false);
 		cntBar.setVisible(false);
 		
+		// ì§„í–‰ ê²Œì´ì§€ë°” ìƒ‰ê¹”
 		cntBar.setForeground(new Color(0xade86d));
 		cntBar.setBackground(Color.WHITE);
 		
-		// ´Ü¾î½ÃÇè ½ÃÀÛ¹öÆ°
+		// ë‹¨ì–´ì‹œí—˜ ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
 		wordButton.addActionListener(e->{
-
 	        label1.setIcon(iconNote1);
 			WordMean=0;
 			testcount=0;
 			testcnt=0;
 			wordButton.setVisible(false);
 			meanButton.setVisible(false);
-			//startButton1.setVisible(false);
 			testField.setVisible(true);
 			submitButton.setVisible(true);
 			wordLabel.setVisible(true);
 			testField.setHorizontalAlignment(JTextField.CENTER);
-			group.clearSelection();
 			for(int i=0;i<MyFrame.SubjectWordCnt[MyFrame.currentSubject];i++) {
 				if(MyFrame.SubjectWord[MyFrame.currentSubject][i][3].equals(true)) {
 					array.add(i);
@@ -141,8 +133,10 @@ public class test extends JFrame  {
 			cntBar.setString(testcount+1+"/"+testcnt);
 			cntBar.setStringPainted(true);
 			cntBar.setVisible(true);
-			Collections.shuffle(array);
+			Collections.shuffle(array); // ëœë¤ìœ¼ë¡œ ì‹œí—˜ì¹˜ê¸° ìœ„í•œ shuffle í•¨ìˆ˜
 			wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][2]);
+			
+			// ì‹œí—˜ì¹˜ëŠ” ë¶€ë¶„ ttsë¡œ ì½ì–´ì£¼ê¸°
 			try {
 				tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][2], 1);
 			} catch (Exception e1) {
@@ -150,20 +144,17 @@ public class test extends JFrame  {
 			}
 		});
 		
-		// ¶æ½ÃÇè ½ÃÀÛ¹öÆ°
+		// ëœ»ì‹œí—˜ ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
 		meanButton.addActionListener(e->{
-
 	        label1.setIcon(iconNote1);
 			WordMean=1;
 			testcount=0;
 			testcnt=0;
 			wordButton.setVisible(false);
 			meanButton.setVisible(false);
-		//	startButton1.setVisible(false);
 			testField.setVisible(true);
 			submitButton.setVisible(true);
 			wordLabel.setVisible(true);
-			group.clearSelection();
 			
 			for(int i=0;i<MyFrame.SubjectWordCnt[MyFrame.currentSubject];i++) {
 				if(MyFrame.SubjectWord[MyFrame.currentSubject][i][3].equals(true)) {
@@ -175,9 +166,10 @@ public class test extends JFrame  {
 			cntBar.setString(testcount+1+"/"+testcnt);
 			cntBar.setStringPainted(true);
 			cntBar.setVisible(true);
-			Collections.shuffle(array);
+			Collections.shuffle(array); // ëœë¤ìœ¼ë¡œ ì‹œí—˜ì¹˜ê¸° ìœ„í•œ shuffle í•¨ìˆ˜
 			wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][1]);
-
+			
+			// ì‹œí—˜ì¹˜ëŠ” ë¶€ë¶„ ttsë¡œ ì½ì–´ì£¼ê¸°
 			try {
 				tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(0)][1], 0);
 			} catch (Exception e1) {
@@ -186,6 +178,7 @@ public class test extends JFrame  {
 		});
 				
 		submitButton.addActionListener(f->{
+			// ë‹¨ì–´ ì‹œí—˜ ë•Œ submit ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
 			if(WordMean==0) {
 				if(MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1].equals(testField.getText())) {
 					wrongTable.setValueAt(iconO, testcount, 0);
@@ -201,6 +194,7 @@ public class test extends JFrame  {
 				cntBar.setString(testcount+1+"/"+testcnt);
 				testField.setText("");
 				
+				// test ëë‚ ë•Œ
 				if(testcnt==testcount) {
 					cntBar.setVisible(false);
 					testField.setVisible(false);
@@ -209,6 +203,7 @@ public class test extends JFrame  {
 				}
 				else {
 					wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2]);
+					// ì‹œí—˜ì¹˜ëŠ” ë¶€ë¶„ ttsë¡œ ì½ì–´ì£¼ê¸°
 					try {
 						tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2], 1);
 					} catch (Exception e1) {
@@ -216,6 +211,7 @@ public class test extends JFrame  {
 					}
 				}
 			}
+			// ëœ» ì‹œí—˜ ë•Œ submit ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
 			if(WordMean==1) {
 				if(MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][2].equals(testField.getText())) {
 					wrongTable.setValueAt(iconO, testcount, 0);
@@ -232,6 +228,7 @@ public class test extends JFrame  {
 				cntBar.setString(testcount+1+"/"+testcnt);
 				testField.setText("");
 				
+				// test ëë‚ ë•Œ
 				if(testcnt==testcount) {
 					cntBar.setVisible(false);
 					testField.setVisible(false);
@@ -240,6 +237,7 @@ public class test extends JFrame  {
 				}
 				else {
 					wordLabel.setText((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1]);
+					// ì‹œí—˜ì¹˜ëŠ” ë¶€ë¶„ ttsë¡œ ì½ì–´ì£¼ê¸°
 					try {
 						tts((String) MyFrame.SubjectWord[MyFrame.currentSubject][array.get(testcount)][1], 0);
 					} catch (Exception e1) {
@@ -250,10 +248,10 @@ public class test extends JFrame  {
 		});
 
 		this.setIconImage(MyFrame.icon2.getImage());
-        label1.setIcon(iconNote);
-        label1.setBounds(0,0,480,854);
-        label1.setVisible(true);
-        JPanel panel = new JPanel();
+       		label1.setIcon(iconNote);
+        	label1.setBounds(0,0,480,854);
+        	label1.setVisible(true);
+        	JPanel panel = new JPanel();
 		panel.setVisible(true);
 		panel.setBounds(0,0,480,854);
 		this.add(panel);
@@ -266,19 +264,17 @@ public class test extends JFrame  {
 		
 		label1.add(wordButton);
 		label1.add(meanButton);
-		
-		
-	//	label1.add(startButton1);
 		label1.add(testField);
 		label1.add(submitButton);
 		label1.add(wordLabel);
 		label1.add(cntBar);
+
+		// test ì¢…ë£Œì‹œ
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 	        @Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent){
 	        	wordButton.setVisible(true);
 				meanButton.setVisible(true);
-			//	startButton1.setVisible(true);
 				testField.setVisible(false);
 				submitButton.setVisible(false);
 				wordLabel.setVisible(false);
