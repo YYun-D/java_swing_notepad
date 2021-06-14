@@ -43,64 +43,70 @@ public class MyFrame extends JFrame{
 	JTable[] wordTable = new JTable[5];
 	static int[] wordColor= {0x7aa7f0,0x629af5,0x4a89f0,0x3a7ff0,0x2471ed};
 	JScrollPane[] scroll_table = new JScrollPane[5];
-
 	static int[] SubjectWordCnt= {0,0,0,0,0};
 	static ImageIcon icon2 = new ImageIcon("noteicon.png");
-
-
 	MyFrame() throws IOException{
 		ImageIcon iconX = new ImageIcon("XX.png");
 		ImageIcon firstPage = new ImageIcon("hello.png");
 		ImageIcon mainPage = new ImageIcon("categories.png");
 		ImageIcon subPage = new ImageIcon("subject.png");
 		ImageIcon iconStar = new ImageIcon("ic_star.png");
-		ImageIcon categoriesImg = new ImageIcon("test.png");	//과목 선택 화면 background image
-		ImageIcon subjectImg = new ImageIcon("subject.png");	//과목 진입 후 화면 background image
-		JButton startButton = new JButton("시작");  	//처음 start 및 뒤로 가는 버튼
+		JButton startButton = new JButton("시작");  		//처음 start 및 뒤로 가는 버튼
 		JButton addSubjectButton = new JButton("+"); 	//주제 추가 버튼
 		JButton testButton = new JButton("TEST");    	//해당 과목에 있는 것들 테스트 버튼
 		JButton deleteSelectedWords = new JButton("");	//해당 주제 삭제 버튼
-		JButton addWord = new JButton("");         	//해당 주제 테이블에 새로운 단어 추가 버튼
-		JCheckBox selectAll = new JCheckBox(); 
-		JCheckBox selectImportant = new JCheckBox(); 
-		JTextField subjectText = new JTextField();     //주제 추가할 때 쓰는 텍스트필드
-		JPanel selectBox= new JPanel();
+		JButton addWord = new JButton("");         		//해당 주제 테이블에 새로운 단어 추가 버튼
+		JPanel selectBox= new JPanel();	
 		JLabel selectYN=new JLabel();
-		JLabel categoriesLabel = new JLabel();		//JLabel for 과목 선택 화면 background
-
-		//과목 선택 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
-		categoriesLabel.setIcon(firstPage);
-		categoriesLabel.setBounds(-8,-10,480,853);
-		categoriesLabel.setVisible(true);
-
-//		JPanel categoriesPanel = new JPanel();
-//		categoriesPanel.setVisible(false);	//생성 시엔 visibility false, 시각화할 때만 true 설정
-//		categoriesPanel.setBounds(0,-10,480,853);
-//		this.add(categoriesPanel);
-//		categoriesPanel.add(categoriesLabel);
-		this.add(categoriesLabel);
-
-
-
-		//SubjectWord라는 각 주제 별 단어 저장용 배열 생성
+		JLabel backGroundImage = new JLabel();			//JLabel for 과목 선택 화면 background
+		JCheckBox selectAll = new JCheckBox(); 			//전체 체크박스 
+		JTextField subjectText = new JTextField();     	//주제 추가할 때 쓰는 텍스트필드
+		
+		//각 주제 별 단어 저장용 배열 생성
 		for(int i=0;i<5;i++) 
 			SubjectWord[i]=new Object[100][4];
-		//Subjects라는 각 주제 별 메인 화면에서 클릭할 버튼 생성
+		//각 주제를 메인 화면에서 고를 수 있는 버튼 생성
 		for(int i=0;i<5;i++) {
 			Subjects[i] = new JButton();
 			Subjects[i].setVisible(false);
 			Subjects[i].setBackground(new Color(wordColor[i]));
 			Subjects[i].setFont(new Font("Comic Sans", Font.BOLD, 30));
 			Subjects[i].setBounds(50,250+(i)*102,358,84);
-//			this.add(Subjects[i]);
-			categoriesLabel.add(Subjects[i]);
+			backGroundImage.add(Subjects[i]);
 			deleteSubjects[i]=new JButton();
 			deleteSubjects[i].setVisible(false);
 			deleteSubjects[i].setBackground(new Color(wordColor[i]));
 			deleteSubjects[i].setIcon(iconX);
 			deleteSubjects[i].setBounds(410,250+(i)*102,30,30);
-			categoriesLabel.add(deleteSubjects[i]);
+			backGroundImage.add(deleteSubjects[i]);
 		}
+		//word.txt파일 읽어서 배열 안에 저장.
+		int subjectcnt=0;
+		line = br.readLine();
+		count = Integer.parseInt(line);
+		cntSubject=count;
+		for(int i=0;i<count;i++) 
+			Subjects[i].setText(br.readLine());
+		while(true) {
+		 	line = br.readLine();
+            if (line==null) break;
+            count = Integer.parseInt(line);
+		 	for(int i=0;i<count;i++) {
+	            line = br.readLine();
+	            String[] wordline = line.split(" ");
+	            if(wordline[0].equals("ic_star.png")) {
+	            	SubjectWord[subjectcnt][i][0]="ic_star.png";
+	            	wordTable[subjectcnt].setValueAt(iconStar, i, 0);
+	            }
+	            else SubjectWord[subjectcnt][i][0]=Boolean.FALSE;
+	            SubjectWord[subjectcnt][i][1]=wordline[1];
+	            SubjectWord[subjectcnt][i][2]=wordline[2];
+	            SubjectWord[subjectcnt][i][3]=Boolean.FALSE;
+		 	}
+			SubjectWordCnt[subjectcnt]+=count;
+		 	subjectcnt++;
+        }
+        br.close();
 
 		//Subjects 눌렀을 때 보여지는 스크롤 가능한 테이블 생성
 		for(int i=0;i<5;i++) {
@@ -155,42 +161,15 @@ public class MyFrame extends JFrame{
 			wordTable[i].getColumnModel().getColumn(1).setPreferredWidth(150);
 			wordTable[i].getColumnModel().getColumn(2).setPreferredWidth(150);
 			wordTable[i].getColumnModel().getColumn(3).setPreferredWidth(50);
-			categoriesLabel.add(scroll_table[i]);
+			backGroundImage.add(scroll_table[i]);
 		}
 
-		//버퍼 리더로 기존에 있는 값 불러와서 배열에 넣어주기
-		int wordcnt=0;
-		int subjectcnt=0;
-		line = br.readLine();
-		count = Integer.parseInt(line);
-		cntSubject=count;
-		for(int i=0;i<count;i++) 
-			Subjects[i].setText(br.readLine());
-		while(true) {
-		 	line = br.readLine();
-            if (line==null) break;
-            count = Integer.parseInt(line);
-		 	for(int i=0;i<count;i++) {
-	            line = br.readLine();
-	            String[] wordline = line.split(" ");
-	            if(wordline[0].equals("ic_star.png")) {
-	            	SubjectWord[subjectcnt][i][0]="ic_star.png";
-	            	wordTable[subjectcnt].setValueAt(iconStar, i, 0);
-	            }
-	            else SubjectWord[subjectcnt][i][0]=Boolean.FALSE;
-	            SubjectWord[subjectcnt][i][1]=wordline[1];
-	            SubjectWord[subjectcnt][i][2]=wordline[2];
-	            SubjectWord[subjectcnt][i][3]=Boolean.FALSE;
-		 	}
-			SubjectWordCnt[subjectcnt]+=count;
-		 	subjectcnt++;
-        }
-
-
+		
+		//주제 추가할 때 주제 이름 정하는 칸
 		subjectText.setVisible(false);
 		subjectText.setFont(new Font("Comic Sans", Font.BOLD, 20));
 
-		// 시험 응시 버튼 시각적 속성 설정
+		//시험 응시 버튼 시각적 속성 설정
 		testButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		testButton.setVisible(false);
 		testButton.setBounds(254,50,180,48);
@@ -201,7 +180,8 @@ public class MyFrame extends JFrame{
 		testButton.setFocusPainted(false);
 		testButton.setBorderPainted(false);
 		testButton.setContentAreaFilled(false);
-
+		
+		//단어 전체 선택, 해제하는 체크박스
 		selectAll.setHorizontalAlignment(JCheckBox.LEFT);
 		selectAll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		selectYN.setText("전체 선택");
@@ -217,7 +197,6 @@ public class MyFrame extends JFrame{
 		deleteSelectedWords.setBounds(114,197,42,43);
 		deleteSelectedWords.setOpaque(false);
 		deleteSelectedWords.setFocusPainted(false);
-		//deleteSelectedWords.setBorderPainted(false);
 		deleteSelectedWords.setContentAreaFilled(false);
 		
 		//단어 추가 버튼 시각적 속성
@@ -225,14 +204,15 @@ public class MyFrame extends JFrame{
 		addWord.setBounds(47,197,42,43);
 		addWord.setOpaque(false);
 		addWord.setFocusPainted(false);
-		//addWord.setBorderPainted(false);
 		addWord.setContentAreaFilled(false);
-
+		
+		//주제 추가 버튼 시각적 속성
 		addSubjectButton.setBounds(50,250+(cntSubject)*102,358,84);
 		addSubjectButton.setFont(new Font("Comic Sans", Font.BOLD, 50));
 		addSubjectButton.setVisible(false);
 		addSubjectButton.setBackground(new Color(0x14A989));
-
+		
+		//맨 처음 start 겸 main화면으로 가는 뒤로가기 버튼
 		startButton.setBounds(150,520,180,180);
 		startButton.setFocusable(false);
 		startButton.setVerticalTextPosition(JButton.BOTTOM);
@@ -243,35 +223,8 @@ public class MyFrame extends JFrame{
 		startButton.setFocusPainted(false);
 		startButton.setBorderPainted(false);
 		startButton.setContentAreaFilled(false);
-		//startButton.setBorder(BorderFactory.createTitledBorder(0,0,0,0));
 
-		// 테스트 버튼
-		testButton.addActionListener(e -> {
-			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
-				if((Boolean)SubjectWord[currentSubject][i][3]==true) {
-					test testFrame;
-					try {
-						testFrame = new test();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (UnsupportedAudioFileException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				}
-				else if(i==SubjectWordCnt[currentSubject]-1) {
-					JOptionPane.showMessageDialog(this,"테스트를 할 단어를 선택해주세요."); 
-				}
-			}
-
-		});
-
-		//새로운 주제 추가하기 버튼
+		//새로운 주제 추가하기 버튼을 눌렀을 때, 주제명을 적을 수 있는 TextField 생성
 		addSubjectButton.addActionListener(e -> {
 			addSubjectButton.setVisible(false);
 			for(int i=0;i<cntSubject;i++) {
@@ -286,33 +239,55 @@ public class MyFrame extends JFrame{
 					addSubjectButton.setVisible(false);
 			}
 		});
-
+		
+		//TextField에 추가 할 주제의 이름을 입력받았을 때, 그 이름을 가진 주제 버튼 만들기
+		subjectText.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	if(subjectText.getText().equals("")) {
+		    		;
+		    	}
+		    	else {
+		    		cntSubject++;
+		    		tempSubjectName=subjectText.getText();
+			    	Subjects[cntSubject-1].setVisible(true);
+			    	Subjects[cntSubject-1].setText(tempSubjectName);
+			    	deleteSubjects[cntSubject-1].setVisible(true);
+			    	subjectText.setText("");
+					addSubjectButton.setBounds(50,250+(cntSubject)*102,358,84);
+		    	}
+		    	if(cntSubject!=5)
+		    		addSubjectButton.setVisible(true);
+				subjectText.setVisible(false);
+				for(int i=0;i<cntSubject;i++) {
+					Subjects[i].setEnabled(true);
+					deleteSubjects[i].setEnabled(true);
+				}
+		    }
+		});
+		
 		for(int i=0;i<5;i++) {
 			int k=i;
-			//각 주제인 Subjects[i]가 눌렸을 때
+			
+			//각 주제인 Subjects[i]가 눌렸을 때 해당 주제 안에 있는 단어 Table 보여주기
 			Subjects[i].addActionListener(e -> {
 				currentSubject=k;
-
-				//이전 페이지의 개체들을 모두 보이지 않게끔 설정
-				categoriesLabel.setIcon(subPage);
-
-				//해당 과목 배경 이미지 visualize
-				//subjectPanel.setVisible(true);
-				categoriesLabel.add(startButton);
-
+				backGroundImage.setIcon(subPage); //배경화면 이미지 교체
 				startButton.setVisible(true);
 				testButton.setVisible(true);
 				deleteSelectedWords.setVisible(true);
 				addWord.setVisible(true);
+				selectBox.setVisible(true);
 				scroll_table[currentSubject].setVisible(true);
 				for(int j=0;j<5;j++) {
 					Subjects[j].setVisible(false);
 					deleteSubjects[j].setVisible(false);
 				}
 				addSubjectButton.setVisible(false);
-				selectBox.setVisible(true);
 			});
-			deleteSubjects[i].addActionListener(e -> { //옆에 있는 조그마한 꼽표로 해당 주제를 다 지울 때
+			
+			//옆에 있는 조그마한 꼽표로 해당 주제를 다 지울 때
+			deleteSubjects[i].addActionListener(e -> { 
 				currentSubject=k;
 				int a=JOptionPane.showConfirmDialog(this,"해당 주제 및 주제 안에 있는 단어를 모두 지우시겠습니까?"); 
 				if(a==JOptionPane.YES_OPTION){  
@@ -331,8 +306,29 @@ public class MyFrame extends JFrame{
 						addSubjectButton.setVisible(true);
 				}
 			});
-
 		}
+				
+		//테스트 버튼
+		testButton.addActionListener(e -> {
+			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
+				if((Boolean)SubjectWord[currentSubject][i][3]==true) {
+					try {
+						new test();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (LineUnavailableException e1) {
+						e1.printStackTrace();
+					} catch (UnsupportedAudioFileException e1) {
+						e1.printStackTrace();
+					}
+					break;
+				}
+				else if(i==SubjectWordCnt[currentSubject]-1) {
+					JOptionPane.showMessageDialog(this,"테스트를 할 단어를 선택해주세요."); 
+				}
+			}
+		});
+
 		//단어 전체 선택 체크박스
 		selectAll.addActionListener(e -> {
 			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
@@ -345,22 +341,7 @@ public class MyFrame extends JFrame{
 			scroll_table[currentSubject].setVisible(true);
 
 		});
-		//중요도 단어 전체 선택 체크박스
-		selectImportant.addActionListener(e -> {
-			for(int i=0;i<SubjectWordCnt[currentSubject];i++) {
-				if(selectImportant.isSelected()) {
-					if(!(boolean)SubjectWord[currentSubject][i][0].equals(false)) {
-						SubjectWord[currentSubject][i][3]=true;
-					}
-				}
-				else
-					if(!(boolean)SubjectWord[currentSubject][i][0].equals(false)) 
-						SubjectWord[currentSubject][i][3]=false;
-			}
-			scroll_table[currentSubject].setVisible(false);
-			scroll_table[currentSubject].setVisible(true);
-
-		});
+		
 		//체크된 단어 삭제하기
 		deleteSelectedWords.addActionListener(e -> {
 			int cnt=0;
@@ -383,36 +364,7 @@ public class MyFrame extends JFrame{
 			scroll_table[currentSubject].setVisible(true);
 		});
 
-		//메인화면으로 가기
-		startButton.addActionListener(e -> {
-
-			categoriesLabel.setIcon(mainPage);
-			startButton.setBounds(41,41,64,64);
-			startButton.setBorderPainted(false);	//make startbutton transparent
-			startButton.setBorderPainted(true);
-			startButton.setText("");
-			startButton.setVisible(false);
-			testButton.setVisible(false);
-			deleteSelectedWords.setVisible(false);
-			addWord.setVisible(false);
-			selectBox.setVisible(false);
-			selectAll.setSelected(false);
-
-			//과목 선택 페이지에서 visualize 될 것들
-			//categoriesPanel.setVisible(true);
-			categoriesLabel.setVisible(true);
-			for(int i=0;i<cntSubject;i++) {
-				scroll_table[i].setVisible(false);
-				Subjects[i].setVisible(true);
-				deleteSubjects[i].setVisible(true);
-			}
-
-			if(cntSubject<5)
-				addSubjectButton.setVisible(true);
-		});
-
-
-		// 단어 추가 버튼 만들기
+		//단어 추가 버튼
 		addWord.addActionListener(e -> {
 			JTextField WordField = new JTextField(10);
 			JTextField MeanField = new JTextField(10);
@@ -478,63 +430,53 @@ public class MyFrame extends JFrame{
 				scroll_table[currentSubject].setVisible(true);
 			}
 		});
+		
+		//메인화면으로 가기
+				startButton.addActionListener(e -> {
+					backGroundImage.setIcon(mainPage);
+					startButton.setBounds(41,41,64,64);
+					startButton.setBorderPainted(false);	
+					startButton.setBorderPainted(true);
+					startButton.setText("");
+					startButton.setVisible(false);
+					testButton.setVisible(false);
+					deleteSelectedWords.setVisible(false);
+					addWord.setVisible(false);
+					selectBox.setVisible(false);
+					selectAll.setSelected(false);
+					backGroundImage.setVisible(true);
+					for(int i=0;i<cntSubject;i++) {
+						scroll_table[i].setVisible(false);
+						Subjects[i].setVisible(true);
+						deleteSubjects[i].setVisible(true);
+					}
+					if(cntSubject<5)
+						addSubjectButton.setVisible(true);
+				});
 
-        //TextField에 추가 할 주제의 이름을 입력받았을 때, 그 이름을 가진 주제 버튼 만들기
-		subjectText.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    	if(subjectText.getText().equals("")) {
-		    		;
-		    	}
-		    	else {
-		    		cntSubject++;
-		    		tempSubjectName=subjectText.getText();
-			    	Subjects[cntSubject-1].setVisible(true);
-			    	Subjects[cntSubject-1].setText(tempSubjectName);
-			    	deleteSubjects[cntSubject-1].setVisible(true);
-			    	subjectText.setText("");
-					addSubjectButton.setBounds(50,250+(cntSubject)*102,358,84);
-		    	}
-		    	if(cntSubject!=5)
-		    		addSubjectButton.setVisible(true);
-				subjectText.setVisible(false);
-				for(int i=0;i<cntSubject;i++) {
-					Subjects[i].setEnabled(true);
-					deleteSubjects[i].setEnabled(true);
-				}
-		    }
-		});
+        
 
 		this.setIconImage(icon2.getImage());
         this.setTitle("Fancy Note Pad");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        this.setSize(480,853);
-				this.setSize(480,853);	//창 크기 설정, 16:9 종횡비
+		this.setSize(480,853);	//창 크기 설정, 16:9 종횡비
         this.setLayout(null);
         this.setVisible(true);
-        this.getContentPane().setBackground(new Color(0xf8b195));
-        /*JLabel label1 = new JLabel();
-        label1.setIcon(iconNote);
-        label1.setBounds(0,0,640,650);
-        label1.setVisible(true);
-        this.add(label1);*/
+		this.add(backGroundImage);
 
-
-        categoriesLabel.add(addSubjectButton);
-        categoriesLabel.add(deleteSelectedWords);
-        categoriesLabel.add(subjectText);
-
-		//	배경 이미지 위에 버튼 추가
-        categoriesLabel.add(testButton);
-        categoriesLabel.add(addWord);
-        categoriesLabel.add(selectBox);
-		//categoriesPanel.setVisible(true);
-		categoriesLabel.setVisible(true);
-        categoriesLabel.add(startButton);
-        //startButton.setVisible(true);
-        br.close();
-        // 창 닫을 때 배열 안에 있는 값들을 text 파일에 저장
+        backGroundImage.add(addSubjectButton);
+        backGroundImage.add(deleteSelectedWords);
+        backGroundImage.add(subjectText);
+        backGroundImage.add(testButton);
+        backGroundImage.add(addWord);
+        backGroundImage.add(selectBox);
+        backGroundImage.add(startButton);
+		backGroundImage.setBounds(-8,-10,480,853);
+        backGroundImage.setIcon(firstPage);
+		backGroundImage.setVisible(true);
+		
+        //창 닫을 때 saveFile()을 호출하면서 때 배열 안에 있는 값들을 text 파일에 저장
         this.addWindowListener(new java.awt.event.WindowAdapter() {
 	        @Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent){
@@ -561,11 +503,10 @@ public class MyFrame extends JFrame{
 		}
 		fw.close();
     }
+	//음성인식 후 String 안에 인식 값 넣기
 	public static void streamingMicRecognize(int lan) throws Exception {
-
     	ResponseObserver<StreamingRecognizeResponse> responseObserver = null;
         try (SpeechClient client = SpeechClient.create()) {
-
             responseObserver =
                 new ResponseObserver<StreamingRecognizeResponse>() {
                     ArrayList<StreamingRecognizeResponse> responses = new ArrayList<>();
@@ -656,6 +597,4 @@ public class MyFrame extends JFrame{
 	    }
 	    responseObserver.onComplete();
 	}
-
-
 } 
