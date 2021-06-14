@@ -74,14 +74,14 @@ public class MyFrame extends JFrame{
 //		JLabel subjectLabel=new JLabel("");
 		
 		startPageLabel.setIcon(startImg);
-		startPageLabel.setBounds(0,0,480,853);
+		startPageLabel.setBounds(0,-20,480,853);
 		startPageLabel.setVisible(true);
 		
 		JPanel startPagePanel = new JPanel();
 		startPagePanel.setVisible(false);
-		startPagePanel.setBounds(0,-10,480,853);
+		startPagePanel.setBounds(0,0,480,853);
 		this.add(startPagePanel);
-		startPagePanel.add(categoriesLabel);
+		startPagePanel.add(startPageLabel);
 		
 		//과목 선택 화면 background image 삽입 위한 패널 생성 및 사이즈 설정
 		categoriesLabel.setIcon(categoriesImg);
@@ -129,9 +129,7 @@ public class MyFrame extends JFrame{
 			Subjects[i].setFont(new Font("Comic Sans", Font.BOLD, 30));
 			Subjects[i].setBounds(36,286+(i)*102,408,84);
 			
-//			this.add(Subjects[i]);
 			categoriesLabel.add(Subjects[i]);
-//			subjectLabel.add(Subjects[i]);
 			
 			deleteSubjects[i]=new JButton();
 			deleteSubjects[i].setVisible(false);
@@ -226,7 +224,6 @@ public class MyFrame extends JFrame{
 		 	subjectcnt++;
         }
 		
-		
 		subjectText.setVisible(false);
 		subjectText.setFont(new Font("Comic Sans", Font.BOLD, 20));
 		
@@ -273,11 +270,13 @@ public class MyFrame extends JFrame{
 		addSubjectButton.setVisible(false);
 		addSubjectButton.setBackground(new Color(0x14A989));
 		
-		startButton.setBounds(225,400,180,100);
+		startButton.setBounds(150,527,180,180);
+		startButton.setBorderPainted(false);
 		startButton.setFocusable(false);
 		startButton.setVerticalTextPosition(JButton.BOTTOM);
 		startButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
 		startButton.setBackground(new Color(0x14A989));
+		startButton.setForeground(Color.WHITE);
 		
 		// 테스트 버튼
 		testButton.addActionListener(e -> {
@@ -339,20 +338,27 @@ public class MyFrame extends JFrame{
 				subjectLabel.setVisible(true);
 				subjectLabel.add(startButton);
 				
-//				subjectLabel.add(subjectText);
-//				subjectText.setVisible(true);
-//				subjectText.setBounds(36,60,408,84);
-//				subjectText.setBorderPainted(false);
+//				subjectLabel.add(Subjects[k]);
+//				Subjects[k].setVisible(true);
+//				Subjects[k].setBounds(36,60,408,84);
 				
 				startButton.setVisible(true);
 				testButton.setVisible(true);
 				deleteSelectedWords.setVisible(true);
 				addWord.setVisible(true);
 				scroll_table[currentSubject].setVisible(true);
+				subjectLabel.add(Subjects[k]);
+				
 				for(int j=0;j<6;j++) {
 					Subjects[j].setVisible(false);
 					deleteSubjects[j].setVisible(false);
 				}
+				
+				Subjects[k].setVisible(true);
+				Subjects[k].setBounds(35,110,400,80);
+				Subjects[k].setHorizontalAlignment(SwingConstants.LEFT);
+				Subjects[k].setBorderPainted(false);
+				
 				addSubjectButton.setVisible(false);
 				selectBox.setVisible(true);
 				selectBox1.setVisible(true);
@@ -567,7 +573,9 @@ public class MyFrame extends JFrame{
         label1.setBounds(0,0,640,650);
         label1.setVisible(true);
         this.add(label1);*/
-				startPagePanel.setVisible(true);
+				
+				this.getContentPane().add(startPageLabel);
+				startPageLabel.setVisible(true);
         startPageLabel.add(startButton);
         
         
